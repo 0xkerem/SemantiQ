@@ -1,11 +1,24 @@
 package com.semantiq.server.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "botdata")
 public class BotData {
-    int id;
-    ChatBot bot;
-    int countPos = 0;
-    int countNeg = 0;
-    String formData;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private ChatBot bot;
+
+    @Column
+    private int countPos = 0;
+
+    @Column
+    private int countNeg = 0;
+
+    @Column
+    private String formData;
 
     public int getId() {
         return id;

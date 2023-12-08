@@ -19,5 +19,6 @@ public class UserController {
     @PostMapping("/{email}")
     public ResponseEntity<?> login(@PathVariable String email, @RequestBody String password) {
 
+        return null;
     }
 }

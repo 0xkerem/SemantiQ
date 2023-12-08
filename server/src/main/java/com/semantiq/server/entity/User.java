@@ -1,13 +1,30 @@
 package com.semantiq.server.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "user")
 public class User {
-    int id;
-    String name;
-    String surname;
-    String email;
-    String password;
-    int verificationCode;
-    ChatBot bot;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column
+    public String name;
+
+    @Column
+    public String surname;
+
+    @Column
+    private String email;
+
+    @Column
+    private String password;
+
+    @Column
+    private int verificationCode;
+
+    private ChatBot bot;
 
     public int getId() {
         return id;
