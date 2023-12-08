@@ -3,8 +3,8 @@ package com.semantiq.server.entity;
 public class BotData {
     int id;
     ChatBot bot;
-    int CountPos = 0;
-    int CountNeg = 0;
+    int countPos = 0;
+    int countNeg = 0;
     String formData;
 
     public int getId() {
@@ -24,19 +24,19 @@ public class BotData {
     }
 
     public int getCountPos() {
-        return CountPos;
+        return countPos;
     }
 
     public void setCountPos(int countPos) {
-        CountPos = countPos;
+        this.countPos = countPos;
     }
 
     public int getCountNeg() {
-        return CountNeg;
+        return countNeg;
     }
 
     public void setCountNeg(int countNeg) {
-        CountNeg = countNeg;
+        this.countNeg = countNeg;
     }
 
     public String getFormData() {
