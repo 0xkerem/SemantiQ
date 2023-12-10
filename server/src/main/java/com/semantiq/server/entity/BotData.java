@@ -8,7 +8,7 @@ public class BotData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    @OneToOne
     private ChatBot bot;
 
     @Column

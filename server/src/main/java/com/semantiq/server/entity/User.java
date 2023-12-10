@@ -23,7 +23,7 @@ public class User {
 
     @Column
     private int verificationCode;
-
+    @OneToOne
     private ChatBot bot;
 
     public int getId() {

@@ -1,6 +1,8 @@
 package com.semantiq.server.entity;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name ="chatbot")
 public class ChatBot {
@@ -10,12 +12,12 @@ public class ChatBot {
 
     @Column
     public String botName;
-
+    @OneToOne
     private User owner;
-
+    @OneToOne
     private BotData data;
-
-    private Chat[] chatList;
+    @OneToMany(mappedBy = "chatbot", cascade = CascadeType.ALL)
+    private List<Chat> chatList;
 
     public int getId() {
         return id;
