@@ -16,7 +16,7 @@ public class ChatBot {
     private User owner;
     @OneToOne
     private BotData data;
-    @OneToMany(mappedBy = "chatbot", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Chat> chatList;
 
     public int getId() {
