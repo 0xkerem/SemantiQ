@@ -8,7 +8,8 @@ public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    @ManyToOne
+    @JoinColumn(name = "chatbot_id", nullable = false)
     private ChatBot bot;
 
     @Column
