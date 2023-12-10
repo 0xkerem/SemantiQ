@@ -47,15 +47,11 @@ public class ChatBot {
         return data;
     }
 
-    public void setData(BotData data) {
-        this.data = data;
-    }
-
-    public Chat[] getChatList() {
+    public List<Chat> getChatList() {
         return chatList;
     }
 
-    public void setChatList(Chat[] chatList) {
+    public void setChatList(List<Chat> chatList) {
         this.chatList = chatList;
     }
 }
