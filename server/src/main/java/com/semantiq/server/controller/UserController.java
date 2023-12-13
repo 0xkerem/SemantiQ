@@ -8,17 +8,51 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/api/users")
+
 public class UserController {
-    private final UserService UserService;
+    private final UserService userService;
 
     @Autowired
-    public  UserController(UserService UserService) {
-        this.UserService = UserService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("/{email}")
-    public ResponseEntity<?> login(@PathVariable String email, @RequestBody String password) {
+    @PostMapping("/login")
+    public ResponseEntity <?> authenticateUser(@RequestBody LoginDTO loginDto) {
 
-        return null;
     }
+
+    @PostMapping("/signup")
+    public ResponseEntity <?> registerUser(@RequestBody SignupDTO signupDto) {
+
+    }
+
+    @DeleteMapping("/{userId}/bots/{botId}")
+    public ResponseEntity <?> deleteBotForUser(@PathVariable int userId, @PathVariable int botId) {
+		/*
+		// Kullanıcıya ait botu silme işlemi UserService'ten çağrılır
+		boolean deleted = userService.deleteBot(userId, botId);
+
+		if (deleted) {
+			return ResponseEntity.ok("Bot successfully deleted!");
+		}
+		else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bot or user not found!");
+		}
+		*/
+    }
+
+    @PostMapping("/{userId}/reset-password")
+    public ResponseEntity <?> resetPassword(@PathVariable int userId, @RequestParam int verificationCode, @RequestParam String newPassword) {
+		/*
+		boolean isPasswordReset = userService.resetPassword(userId, verificationCode, newPassword);
+		if (isPasswordReset) {
+			return ResponseEntity.ok("Password reset successful!");
+		}
+		else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password reset failed!");
+		}
+		*/
+    }
+
 }
