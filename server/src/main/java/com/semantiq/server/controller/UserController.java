@@ -1,5 +1,7 @@
 package com.semantiq.server.controller;
 
+import com.semantiq.server.DTO.LoginDTO;
+import com.semantiq.server.DTO.SignupDTO;
 import com.semantiq.server.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,11 +22,13 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity <?> authenticateUser(@RequestBody LoginDTO loginDto) {
 
+        return null;
     }
 
     @PostMapping("/signup")
     public ResponseEntity <?> registerUser(@RequestBody SignupDTO signupDto) {
 
+        return null;
     }
 
     @DeleteMapping("/{userId}/bots/{botId}")
@@ -40,6 +44,8 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bot or user not found!");
 		}
 		*/
+
+        return null;
     }
 
     @PostMapping("/{userId}/reset-password")
@@ -53,6 +59,8 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password reset failed!");
 		}
 		*/
+
+        return null;
     }
 
 }
