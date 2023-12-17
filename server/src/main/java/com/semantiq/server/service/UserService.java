@@ -20,7 +20,19 @@ public class UserService {
       }
 
       // Save User to Database
-      public User saveUser(User user) {
-          return userRepo.save(user);
+      public void saveUser(User user) {
+          userRepo.save(user);
+      }
+
+      public boolean verifyUser(String email, int verificationCode) {
+          User user = findUserByEmail(email);
+          if (user.getVerificationCode() == verificationCode) {
+              // Set the user's isVerified property to true and save it
+              user.setVerified(true);
+              userRepo.save(user);
+              return true;
+          } else {
+              return false;
+          }
       }
 }

@@ -52,10 +52,18 @@ public class UserController {
         return null;
     }
 
-    @PostMapping("/{userId}/verify")
-    public ResponseEntity <?> verify(@PathVariable int userId, @RequestParam int verificationCode) {
+    @PostMapping("/{email}/verify")
+    public ResponseEntity <?> verify(@PathVariable String email, @RequestParam int verificationCode) {
+        // Check if user is already verified
+        if (userService.findUserByEmail(email) != null) {
+            return new ResponseEntity<>("The user is already verified!", HttpStatus.BAD_REQUEST);
+        }
 
-        return null;
+        if (userService.verifyUser(email, verificationCode)) {
+            return new ResponseEntity<>("Email address has been successfully verified.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Verification code did not match!", HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
