@@ -3,7 +3,9 @@ package com.semantiq.server.controller;
 import com.semantiq.server.DTO.LoginDTO;
 import com.semantiq.server.DTO.SignupDTO;
 import com.semantiq.server.entity.User;
+import com.semantiq.server.service.EmailService;
 import com.semantiq.server.service.UserService;
+import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,10 +17,12 @@ import org.springframework.web.bind.annotation.*;
 
 public class UserController {
     private final UserService userService;
+    private final EmailService emailService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, EmailService emailService) {
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     @PostMapping("/login")
@@ -28,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity <?> registerUser(@RequestBody SignupDTO signupDto) {
+    public ResponseEntity <?> registerUser(@RequestBody SignupDTO signupDto) throws MessagingException {
         // Check if a user with this email is already registered
         if (userService.findUserByEmail(signupDto.getEmail()) != null) {
             return new ResponseEntity<>("Email is already registered!", HttpStatus.BAD_REQUEST);
@@ -43,6 +47,9 @@ public class UserController {
         );
 
         userService.saveUser(newUser);
+        
+        // Send verification code to email address
+        emailService.sendVerificationCode(newUser.getEmail());
 
         return new ResponseEntity<>("The account has been created successfully.", HttpStatus.CREATED);
     }
