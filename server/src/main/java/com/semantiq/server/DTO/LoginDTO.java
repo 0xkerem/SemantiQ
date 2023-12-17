@@ -12,29 +12,24 @@ public class LoginDTO {
     // The password associated with email
     private String password;
 
-    // Constructor method for LoginDTO
+    // Constructor for LoginDTO
     public LoginDTO() {
 
     }
 
-    // Get ve Set ler için yorumlar kaldırılabilir!!!
 
-    // Get the email associated with the user
     public String getEmail() {
         return email;
     }
 
-    // Set the email for the user
     public void setEmail(String email) {
         this.email = email;
     }
 
-    // Get the password associated with email
     public String getPassword() {
         return password;
     }
 
-    // Set the password for the user
     public void setPassword(String password) {
         this.password = password;
     }

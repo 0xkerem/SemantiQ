@@ -2,6 +2,8 @@ package com.semantiq.server.entity;
 
 import jakarta.persistence.*;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 @Entity
 @Table(name = "user")
 public class User {
@@ -23,8 +25,29 @@ public class User {
 
     @Column
     private int verificationCode;
+
+    @Column
+    private boolean isVerified = false;
+
     @OneToOne
     private ChatBot bot;
+
+    public User(String name, String surname, String email, String password) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.verificationCode = generateVerificationCode();
+    }
+
+    public User() {
+
+    }
+
+    // Method to generate a random 4-digit verification code
+    public int generateVerificationCode() {
+        return ThreadLocalRandom.current().nextInt(1000, 10000);
+    }
 
     public int getId() {
         return id;
@@ -80,5 +103,13 @@ public class User {
 
     public void setBot(ChatBot bot) {
         this.bot = bot;
+    }
+
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(boolean verified) {
+        isVerified = verified;
     }
 }
