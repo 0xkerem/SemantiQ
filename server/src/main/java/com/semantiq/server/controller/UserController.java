@@ -27,8 +27,22 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity <?> authenticateUser(@RequestBody LoginDTO loginDto) {
+        // Check if user exists
+        if (userService.findUserByEmail(loginDto.getEmail()) == null) {
+            return new ResponseEntity<>("User not found!", HttpStatus.NOT_FOUND);
+        }
 
-        return null;
+        // Check if user not verified
+        if (!userService.findUserByEmail((loginDto.getEmail())).isVerified()) {
+            return new ResponseEntity<>("User not verified! Please verify your email address.", HttpStatus.FORBIDDEN);
+        }
+
+        // Check password
+        if (userService.checkPassword(loginDto.getPassword(), loginDto.getEmail())) {
+            return new ResponseEntity<>("Successfully logged in.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Password did not match.", HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PostMapping("/signup")
@@ -43,11 +57,11 @@ public class UserController {
                 signupDto.getName(),
                 signupDto.getSurname(),
                 signupDto.getEmail(),
-                signupDto.getPassword()
+                userService.encodePassword(signupDto.getPassword())
         );
 
         userService.saveUser(newUser);
-        
+
         // Send verification code to email address
         emailService.sendVerificationCode(newUser.getEmail());
 
@@ -62,7 +76,7 @@ public class UserController {
     @PostMapping("/{email}/verify")
     public ResponseEntity <?> verify(@PathVariable String email, @RequestParam int verificationCode) {
         // Check if user is already verified
-        if (userService.findUserByEmail(email) != null) {
+        if (userService.findUserByEmail(email).isVerified()) {
             return new ResponseEntity<>("The user is already verified!", HttpStatus.BAD_REQUEST);
         }
 
