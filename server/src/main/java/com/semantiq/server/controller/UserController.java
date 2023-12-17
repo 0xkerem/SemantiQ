@@ -68,9 +68,13 @@ public class UserController {
         return new ResponseEntity<>("The account has been created successfully.", HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{userId}/bots/{botId}")
-    public ResponseEntity <?> deleteBotForUser(@PathVariable int userId, @PathVariable int botId) {
-        return null;
+    @DeleteMapping("/{email}/bots}")
+    public ResponseEntity <?> deleteBotForUser(@PathVariable String email) {
+        if (userService.deleteBot(email)) {
+            return new ResponseEntity<>("Bot removed!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User has no bot!", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/{email}/verify")

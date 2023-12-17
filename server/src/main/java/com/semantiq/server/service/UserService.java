@@ -32,7 +32,7 @@ public class UserService {
           if (user.getVerificationCode() == verificationCode) {
               // Set the user's isVerified property to true and save it
               user.setVerified(true);
-              userRepo.save(user);
+              saveUser(user);
               return true;
           } else {
               return false;
@@ -46,5 +46,19 @@ public class UserService {
       public boolean checkPassword(String password, String email) {
           User user = findUserByEmail(email);
           return passwordEncoder.matches(password, user.getPassword());
+      }
+
+      public boolean deleteBot(String email) {
+          User user = findUserByEmail(email);
+
+          // Check if user has chatBot
+          if (user.getBot() == null) {
+              return false;
+          }
+
+          // Set user's bot to null
+          user.setBot(null);
+          saveUser(user);
+          return true;
       }
 }
