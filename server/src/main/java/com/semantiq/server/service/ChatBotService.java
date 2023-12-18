@@ -90,18 +90,7 @@ public class ChatBotService {
         String sourceId = "";
 
         try {
-            URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setDoOutput(true);
-
-            String postData = "{ \"url\": \"" + urlToSubmit + "\" }";
-
-            try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
-                outputStream.writeBytes(postData);
-                outputStream.flush();
-            }
+            HttpURLConnection connection = getHttpURLConnection(urlToSubmit, apiUrl);
 
             int responseCode = connection.getResponseCode();
 
@@ -126,6 +115,22 @@ public class ChatBotService {
         }
 
         return sourceId;
+    }
+
+    private static HttpURLConnection getHttpURLConnection(String urlToSubmit, String apiUrl) throws IOException {
+        URL url = new URL(apiUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setDoOutput(true);
+
+        String postData = "{ \"url\": \"" + urlToSubmit + "\" }";
+
+        try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
+            outputStream.writeBytes(postData);
+            outputStream.flush();
+        }
+        return connection;
     }
 
     private static String parseSourceId(String jsonResponse) {
