@@ -25,29 +25,32 @@ public class ChatBotController {
     }
 
 
-    @PostMapping("{/{botName}/users/{id}")
+    @PostMapping("/{botName}/users/{id}")
     public ResponseEntity<?> createBot(@PathVariable int id, @PathVariable String botName, @RequestBody String formData) {
+        User user = userService.findUserById(id);
+
+        // Check if user exists
+        if (user == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+
         // Check if user already has a chatbot
-        if (userService.findUserById(id).getBot() != null) {
+        if (user.getBot() != null) {
             return new ResponseEntity<>("User already has a chat bot.", HttpStatus.FORBIDDEN);
         }
 
-        // Add limit check
+        // Add limit control here!
 
-        // Then create bot
-        User user = userService.findUserById(id);
+        // Create bot
         ChatBot chatBot = new ChatBot();
         chatBot.setBotName(botName);
+        chatBot = chatbotService.setBotData(chatBot, formData);
+        chatbotService.saveChatBot(chatBot);
 
-
+        // Set bot for the user and save the user
+        user.setBot(chatBot);
+        userService.saveUser(user);
 
         return new ResponseEntity<>("Chatbot Created", HttpStatus.OK);
-    }
-
-
-    @PostMapping("{botId}/generate-pdf")
-    public ResponseEntity <?> createPDF(@PathVariable int botId, @RequestBody String pdfData) {
-
-        return null;
     }
 }

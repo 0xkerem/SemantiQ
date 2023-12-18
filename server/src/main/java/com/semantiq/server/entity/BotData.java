@@ -20,6 +20,9 @@ public class BotData {
     @Column
     private String formData;
 
+    @Column
+    private String apiId;
+
     public int getId() {
         return id;
     }
@@ -58,5 +61,13 @@ public class BotData {
 
     public void setFormData(String formData) {
         this.formData = formData;
+    }
+
+    public String getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(String apiId) {
+        this.apiId = apiId;
     }
 }
