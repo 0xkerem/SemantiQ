@@ -32,6 +32,7 @@ public class User {
     @OneToOne
     private ChatBot bot;
 
+    // Constructors
     public User(String name, String surname, String email, String password) {
         this.name = name;
         this.surname = surname;

@@ -18,9 +18,12 @@ public class UserService {
       }
 
       // Find User by email if it exists in database
-      public User findUserByEmail (String email) {
+      public User findUserByEmail(String email) {
           return userRepo.findByEmail(email);
       }
+
+      // Find User by id if it exists in database
+      public User findUserById(int id) { return userRepo.findById(id); }
 
       // Save User to Database
       public void saveUser(User user) {

@@ -19,6 +19,9 @@ public class ChatBot {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Chat> chatList;
 
+    // Constructor
+    public ChatBot() {}
+
     public int getId() {
         return id;
     }
@@ -45,6 +48,10 @@ public class ChatBot {
 
     public BotData getData() {
         return data;
+    }
+
+    public void setData(BotData data) {
+        this.data = data;
     }
 
     public List<Chat> getChatList() {
