@@ -2,6 +2,8 @@ package com.semantiq.server.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "botdata")
 public class BotData {
@@ -22,6 +24,9 @@ public class BotData {
 
     @Column
     private String apiId;
+
+    @Column
+    private LocalDate lastUpdated;
 
     public int getId() {
         return id;
@@ -69,5 +74,13 @@ public class BotData {
 
     public void setApiId(String apiId) {
         this.apiId = apiId;
+    }
+
+    public LocalDate getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(LocalDate lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 }

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @Controller
 @RequestMapping("/api/bots")
 
@@ -40,6 +42,7 @@ public class ChatBotController {
         }
 
         // Add limit control here!
+        if (user.getBot().getData().getLastUpdated().equals(LocalDate.now())) return new ResponseEntity<>("The user reached daily limit!", HttpStatus.BAD_REQUEST);
 
         // Create bot
         ChatBot chatBot = new ChatBot();
