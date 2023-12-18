@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  background-image: url('./home.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.App-header {
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 120px;
+  background-color: transparent;
+  margin: 0;
+}
+
+.Header-logo {
+  color: aliceblue;
+  font-size: 56px;
+  font-family: 'Noto Sans Kannada', sans-serif;
+}
+
+.Header-login-button {
+  border-width: 2.5px;
+  width: 120px;
+  height: 60px;
+  color: aliceblue;
+  font-size: 24px;
+  border-radius: 75px;
+  border-color: aliceblue;
+  background-color: transparent;
+  font-family: 'Noto Sans Kannada', sans-serif;
+}
+
+.Header-signup-button {
+  width: 160px;
+  height: 60px;
+  font-size: 24px;
+  border-radius: 75px;
+  border-color: aliceblue;
+  font-family: 'Noto Sans Kannada', sans-serif;
+}
+
+.Header-logo-container {
+  width: 20%;
+  margin: 20px 10px;
+}
+
+.Header-button-container {
+  width: 20%;
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.App {
+  height: 100vh;
+}
