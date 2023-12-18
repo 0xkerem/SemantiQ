@@ -41,8 +41,10 @@ public class ChatBotController {
             return new ResponseEntity<>("User already has a chat bot.", HttpStatus.FORBIDDEN);
         }
 
-        // Add limit control here!
-        if (user.getBot().getData().getLastUpdated().equals(LocalDate.now())) return new ResponseEntity<>("The user reached daily limit!", HttpStatus.BAD_REQUEST);
+        // Check if the user exceeded the limit
+        if (user.getBot().getData().getLastUpdated().equals(LocalDate.now())) {
+            return new ResponseEntity<>("The user reached daily update limit!", HttpStatus.BAD_REQUEST);
+        }
 
         // Create bot
         ChatBot chatBot = new ChatBot();
