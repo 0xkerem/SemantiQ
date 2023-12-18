@@ -4,7 +4,7 @@ export default function Header() {
   return (
     <div className='header'>
       <div className='Header-logo-container'>
-        <p className='Header-logo'>SemantiQ</p>
+        <a href='/' className='Header-logo'>SemantiQ</a>
       </div>
       <div className='Header-button-container'>
         <button className='Header-login-button'>Log in</button>
