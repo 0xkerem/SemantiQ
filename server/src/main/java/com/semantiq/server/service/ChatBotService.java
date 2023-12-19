@@ -4,18 +4,17 @@ import com.semantiq.server.entity.BotData;
 import com.semantiq.server.entity.ChatBot;
 import com.semantiq.server.repository.BotDataRepo;
 import com.semantiq.server.repository.ChatBotRepo;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import org.json.JSONObject;
+
+import java.io.*;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -39,19 +38,19 @@ public class ChatBotService {
         return chatBotRepo.findById(id);
     }
 
-    // Set Chatbot's data and upload created PDF to external API
-    public ChatBot setBotData(ChatBot chatBot, String formData) {
+    // Method to convert string content to PDF and upload to external API
+    public ChatBot setBotData(ChatBot chatBot, String formData, int id) {
         BotData botData = new BotData();
         botData.setFormData(formData);
 
-        String filePath = "src/main/resources/Files/" + String.valueOf(chatBot.getId());
+        String filePath = "src/main/resources/Files/" + String.valueOf(id) + ".pdf";
         boolean pdfConversionSuccess = convertStringToPDF(formData, filePath);
 
         if (pdfConversionSuccess) {
             chatBot.setData(botData);
 
             // Call the method to get the sourceId
-            String sourceId = getSourceId(filePath);
+            String sourceId = uploadPDF(filePath);
 
             if (sourceId != null && !sourceId.isEmpty()) {
                 botData.setSourceId(sourceId);
@@ -66,33 +65,34 @@ public class ChatBotService {
         return chatBot;
     }
 
-
     // Method for String PDF conversation
     private static boolean convertStringToPDF(String content, String filePath) {
-        try (PDDocument document = new PDDocument()) {
-            PDPage page = new PDPage();
-            document.addPage(page);
+        try {
+            // Create a new Document
+            Document document = new Document();
 
-            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-                contentStream.beginText();
-                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 10);
-                contentStream.newLineAtOffset(50, 700); // Adjust the position as needed
-                contentStream.showText(content);
-                contentStream.endText();
-            }
+            // Initialize PDF writer
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));
 
-            document.save(filePath);
-            System.out.println("PDF created successfully at: " + filePath);
-            return true;
-        } catch (IOException e) {
-            System.err.println("Error occurred while creating PDF: " + e.getMessage());
-            return false;
+            // Open the document
+            document.open();
+
+            // Add content to the document
+            document.add(new Paragraph(content));
+
+            // Close the document
+            document.close();
+
+            return true; // Return true if the method is successful
+        } catch (DocumentException | FileNotFoundException e) {
+            e.printStackTrace();
+            return false; // Return false if an exception occurs
         }
     }
 
     // Method to add for making API call and retrieving sourceId
     private String getSourceId(String urlToSubmit) {
-        String apiUrl = "https://api.chatpdf.com/v1/sources/add-url";
+        String apiUrl = "https://api.chatpdf.com/v1/sources/add-file";
         String sourceId = "";
 
         try {
@@ -139,11 +139,55 @@ public class ChatBotService {
         return connection;
     }
 
+    // Upload PDF file to API and retrieve sourceId
+    private String uploadPDF(String filePath) {
+        String apiUrl = "https://api.chatpdf.com/v1/sources/add-file";
+        String sourceId = "";
+
+        try {
+            URL url = new URL(apiUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/octet-stream");
+            conn.setRequestProperty("x-api-key", "sec_QEql2uXiD7sW0Nq6wbtK1fRuP3yZ5FHm");
+            conn.setDoOutput(true);
+
+            File pdfFile = new File(filePath);
+            FileInputStream fileInputStream = new FileInputStream(pdfFile);
+            OutputStream outputStream = conn.getOutputStream();
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+            outputStream.close();
+            fileInputStream.close();
+
+            if (conn.getResponseCode() == 200) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                String jsonResponse = response.toString();
+                sourceId = parseSourceId(jsonResponse);
+            } else {
+                System.out.println("Status: " + conn.getResponseCode());
+                System.out.println("Error: " + conn.getResponseMessage());
+            }
+            conn.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return sourceId;
+    }
     private static String parseSourceId(String jsonResponse) {
-        // Parse the JSON response to extract the sourceId
-        int startIndex = jsonResponse.indexOf("\"sourceId\": \"");
-        int endIndex = jsonResponse.indexOf("\"", startIndex + 13);
-        return jsonResponse.substring(startIndex + 13, endIndex);
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        return jsonObject.getString("sourceId");
     }
 
     // Chat service

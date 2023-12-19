@@ -42,14 +42,14 @@ public class ChatBotController {
         }
 
         // Check if the user exceeded the limit
-        if (user.getBot().getData().getLastUpdated().equals(LocalDate.now())) {
-            return new ResponseEntity<>("The user reached daily update limit!", HttpStatus.BAD_REQUEST);
-        }
+        //if (user.getBot().getData().getLastUpdated().equals(LocalDate.now())) {
+        //    return new ResponseEntity<>("The user reached daily update limit!", HttpStatus.BAD_REQUEST);
+        //}
 
         // Create bot
         ChatBot chatBot = new ChatBot();
         chatBot.setBotName(botName);
-        chatBot = chatbotService.setBotData(chatBot, formData);
+        chatBot = chatbotService.setBotData(chatBot, formData, id);
         chatbotService.saveChatBot(chatBot);
 
         // Set bot for the user and save the user

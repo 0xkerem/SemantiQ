@@ -2,6 +2,7 @@ package com.semantiq.server.controller;
 
 import com.semantiq.server.DTO.LoginDTO;
 import com.semantiq.server.DTO.SignupDTO;
+import com.semantiq.server.DTO.VerificationDTO;
 import com.semantiq.server.entity.User;
 import com.semantiq.server.service.EmailService;
 import com.semantiq.server.service.UserService;
@@ -79,13 +80,13 @@ public class UserController {
     }
 
     @PostMapping("/{email}/verify")
-    public ResponseEntity <?> verify(@PathVariable String email, @RequestParam int verificationCode) {
+    public ResponseEntity <?> verify(@PathVariable String email, @RequestBody VerificationDTO vDTO) {
         // Check if user is already verified
         if (userService.findUserByEmail(email).isVerified()) {
             return new ResponseEntity<>("The user is already verified!", HttpStatus.BAD_REQUEST);
         }
 
-        if (userService.verifyUser(email, verificationCode)) {
+        if (userService.verifyUser(email, vDTO.getCode())) {
             return new ResponseEntity<>("Email address has been successfully verified.", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Verification code did not match!", HttpStatus.BAD_REQUEST);
