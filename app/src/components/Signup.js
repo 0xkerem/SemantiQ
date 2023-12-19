@@ -68,6 +68,42 @@ export default function Signup() {
     }
   };
 
+  const verify = (code, email) => {
+    const xhr = new XMLHttpRequest();
+    const endpoint = `http://localhost:8080/api/users/${email}/verify`;
+  
+    xhr.open('POST', endpoint, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+  
+    // Define what happens on successful response
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        // Successful verification
+        alert('Email address has been successfully verified.');
+      } else if (xhr.status === 400) {
+        // Verification failed due to wrong code
+        alert('Verification code did not match! Try again.');
+        // Re-invoke verify function to try again
+        verify(code);
+      }
+    };
+  
+    // Handle network errors
+    xhr.onerror = function () {
+      alert('There was a network error.');
+      // Re-invoke verify function to try again
+      verify(code);
+    };
+  
+    // Create a data object to send in the request body
+    const data = JSON.stringify({
+      code: code
+    });
+  
+    // Send the request
+    xhr.send(data);
+  };  
+
   const handleSignup = async (event) => {
     event.preventDefault();
   
@@ -115,8 +151,12 @@ export default function Signup() {
     xhr.open('POST', 'http://localhost:8080/api/users/signup', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function () {
-      if (xhr.status === 200) {
-        // Handle the response data
+      if (xhr.status === 201) {
+        let verificationCode = prompt("Enter the verification code sent to your e-mail address.");
+        verify(verificationCode, email)
+        console.log(xhr.responseText);
+      } else if (xhr.status === 400) {
+        alert("Email is already registered!")
         console.log(xhr.responseText);
       } else {
         // Handle errors
@@ -126,7 +166,6 @@ export default function Signup() {
     xhr.send(requestBody);
   };
   
-
   return (
     <div className='Signup'>
       {showLogin ? (
