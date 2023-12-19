@@ -56,6 +56,7 @@ public class UserController {
         User newUser = new User(
                 signupDto.getName(),
                 signupDto.getSurname(),
+                signupDto.getCompany(),
                 signupDto.getEmail(),
                 userService.encodePassword(signupDto.getPassword())
         );

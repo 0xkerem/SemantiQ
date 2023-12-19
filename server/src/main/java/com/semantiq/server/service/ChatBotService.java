@@ -11,6 +11,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -33,6 +34,11 @@ public class ChatBotService {
         chatBotRepo.save(chatBot);
     }
 
+    // Find ChatBot by id
+    public ChatBot findChatBotById(int id) {
+        return chatBotRepo.findById(id);
+    }
+
     // Set Chatbot's data and upload created PDF to external API
     public ChatBot setBotData(ChatBot chatBot, String formData) {
         BotData botData = new BotData();
@@ -48,7 +54,7 @@ public class ChatBotService {
             String sourceId = getSourceId(filePath);
 
             if (sourceId != null && !sourceId.isEmpty()) {
-                botData.setApiId(sourceId);
+                botData.setSourceId(sourceId);
                 botDataRepo.save(botData);
             } else {
                 System.err.println("Failed to retrieve sourceId from API");
@@ -62,7 +68,7 @@ public class ChatBotService {
 
 
     // Method for String PDF conversation
-    public static boolean convertStringToPDF(String content, String filePath) {
+    private static boolean convertStringToPDF(String content, String filePath) {
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage();
             document.addPage(page);
@@ -85,7 +91,7 @@ public class ChatBotService {
     }
 
     // Method to add for making API call and retrieving sourceId
-    public String getSourceId(String urlToSubmit) {
+    private String getSourceId(String urlToSubmit) {
         String apiUrl = "https://api.chatpdf.com/v1/sources/add-url";
         String sourceId = "";
 
@@ -138,5 +144,12 @@ public class ChatBotService {
         int startIndex = jsonResponse.indexOf("\"sourceId\": \"");
         int endIndex = jsonResponse.indexOf("\"", startIndex + 13);
         return jsonResponse.substring(startIndex + 13, endIndex);
+    }
+
+    // Chat service
+    public String askQuestion(int botId, int chatId, String question) {
+        ChatBot bot = findChatBotById(botId);
+        String sourceId = bot.getData().getSourceId();
+        return sourceId;
     }
 }

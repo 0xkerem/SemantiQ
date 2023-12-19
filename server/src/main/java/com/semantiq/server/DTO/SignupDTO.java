@@ -9,13 +9,16 @@ public class SignupDTO {
     // The name of the user
     private String name;
 
-    //The surname of the user
+    // The surname of the user
     private String surname;
+
+    // The company of the user
+    private String company;
 
     // The email of the user
     private String email;
 
-    //The password of the user
+    // The password of the user
     private String password;
 
     // Constructor for SignupDTO
@@ -35,9 +38,16 @@ public class SignupDTO {
         return surname;
     }
 
-    // Set the surname for the user
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     public String getEmail() {

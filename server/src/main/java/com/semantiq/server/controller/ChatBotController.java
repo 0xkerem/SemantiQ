@@ -58,4 +58,9 @@ public class ChatBotController {
 
         return new ResponseEntity<>("Chatbot Created", HttpStatus.OK);
     }
+
+    @PostMapping("/{chatBotId}/chat/{chatId}")
+    public ResponseEntity<?> ask(@PathVariable int chatBotId, @PathVariable int chatId, @RequestBody String question) {
+        return null;
+    }
 }

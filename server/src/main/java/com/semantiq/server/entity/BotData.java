@@ -23,7 +23,7 @@ public class BotData {
     private String formData;
 
     @Column
-    private String apiId;
+    private String sourceId;
 
     @Column
     private LocalDate lastUpdated;
@@ -68,12 +68,12 @@ public class BotData {
         this.formData = formData;
     }
 
-    public String getApiId() {
-        return apiId;
+    public String getSourceId() {
+        return sourceId;
     }
 
-    public void setApiId(String apiId) {
-        this.apiId = apiId;
+    public void setSourceId(String apiId) {
+        this.sourceId = apiId;
     }
 
     public LocalDate getLastUpdated() {

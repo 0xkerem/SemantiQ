@@ -18,6 +18,9 @@ public class User {
     public String surname;
 
     @Column
+    private String company;
+
+    @Column
     private String email;
 
     @Column
@@ -33,9 +36,10 @@ public class User {
     private ChatBot bot;
 
     // Constructors
-    public User(String name, String surname, String email, String password) {
+    public User(String name, String surname, String company, String email, String password) {
         this.name = name;
         this.surname = surname;
+        this.company = company;
         this.email = email;
         this.password = password;
         this.verificationCode = generateVerificationCode();
@@ -112,5 +116,13 @@ public class User {
 
     public void setVerified(boolean verified) {
         isVerified = verified;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 }
