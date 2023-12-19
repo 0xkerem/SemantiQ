@@ -19,13 +19,11 @@ public class ChatBotController {
     private final ChatBotService chatbotService;
     private final UserService userService;
 
-
     @Autowired
     public ChatBotController(ChatBotService chatbotService, UserService userService) {
         this.chatbotService = chatbotService;
         this.userService = userService;
     }
-
 
     @PostMapping("/{botName}/users/{id}")
     public ResponseEntity<?> createBot(@PathVariable int id, @PathVariable String botName, @RequestBody String formData) {

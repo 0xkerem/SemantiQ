@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Signup from './Signup'; // Import your Signup component here
 
 export default function Login() {
   const [showSignup, setShowSignup] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  
+  useEffect(() => {
+    const rememberMeValue = localStorage.getItem('rememberMe');
+    if (rememberMeValue && rememberMeValue === 'true') {
+      setRememberMe(true);
+    }
+  }, []);
 
   const handleSignUpClick = () => {
     setShowSignup(true);
@@ -10,6 +18,12 @@ export default function Login() {
 
   const handleBackToLogin = () => {
     setShowSignup(false);
+  };
+
+  const handleRememberMeChange = (event) => {
+    const { checked } = event.target;
+    setRememberMe(checked);
+    localStorage.setItem('rememberMe', checked ? 'true' : 'false');
   };
 
   return (
@@ -35,7 +49,13 @@ export default function Login() {
                 </div>
                 <div className="form-group">
                   <div className="checkbox-group">
-                    <input type="checkbox" id="rememberMe" name="rememberMe" />
+                    <input
+                      type="checkbox"
+                      id="rememberMe"
+                      name="rememberMe"
+                      checked={rememberMe}
+                      onChange={handleRememberMeChange}
+                    />
                     <label className='Login-label' htmlFor="rememberMe">Remember Me</label>
                   </div>
                 </div>
