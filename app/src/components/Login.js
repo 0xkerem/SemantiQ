@@ -13,10 +13,10 @@ export default function Login() {
             </p>
             <form>
               <div className="form-group">
-                <input type="text" id="email" name="email" placeholder="Email Address" />
+                <input type="text" className="losign" name="email" placeholder="Email Address" />
               </div>
               <div className="form-group">
-                <input type="password" id="password" name="password" placeholder="Password" />
+                <input type="password" className="losign" name="password" placeholder="Password" />
               </div>
               <div className="form-group">
                 <div className="checkbox-group">

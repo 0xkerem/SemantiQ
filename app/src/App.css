@@ -5,6 +5,11 @@
   padding: 0;
 }
 
+body {
+  z-index: 1;
+}
+
+/* App */
 .App {
   background-image: url('./home.jpg');
   background-position: center;
@@ -13,15 +18,22 @@
   height: 100vh;
 }
 
-body {
-  z-index: 1;
-}
-
 .App-header {
   margin: 0;
   padding: 0;
 }
 
+.overlay {
+  position: fixed;
+  top: 0
+  left 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+  z-index: 0;
+}
+
+/* Header */
 .header {
   display: flex;
   justify-content: space-between;
@@ -39,13 +51,12 @@ body {
 }
 
 .Header-login-button {
-  border-width: 2.5px;
   width: 100px;
   height: 50px;
   color: aliceblue;
   font-size: 18px;
   border-radius: 75px;
-  border-color: aliceblue;
+  border: 2.5px solid aliceblue;
   background-color: transparent;
   font-family: 'Noto Sans Kannada', sans-serif;
 }
@@ -60,6 +71,7 @@ body {
   height: 50px;
   font-size: 18px;
   border-radius: 75px;
+  border: 2.5px solid white;
   border-color: aliceblue;
   font-family: 'Noto Sans Kannada', sans-serif;
 }
@@ -88,17 +100,8 @@ body {
   left: 125px;
 }
 
-.overlay {
-  position: fixed;
-  top: 0
-  left 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
-  z-index: 0;
-}
-
-.Login {
+/* Log in and Sign up*/
+.Login, .Signup {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -111,7 +114,7 @@ body {
   align-items: center;
 }
 
-.login-container {
+.login-container, .Signup-container {
   background-color: #F3F4F8;
   text-align: center;
   height: 100%;
@@ -122,7 +125,12 @@ body {
   justify-content: center;
   align-items: center;
 }
+
 .login-container > * {
+  margin: 5px;
+}
+
+.Signup-container > * {
   margin: 5px;
 }
 
@@ -134,7 +142,15 @@ body {
   padding: 0;
 }
 
-.Login-pattern {
+.Signup-box {
+  display: flex;
+  padding: 20px;
+  height: 530px;
+  width: 520px;
+  padding: 0;
+}
+
+.Login-pattern, .Signup-pattern {
   width: 50px;
   background: 
   linear-gradient(45deg, #6419af 25%, transparent 25%, transparent 75%, #6419af 75%, #6419af),
@@ -145,8 +161,8 @@ body {
   border-radius: 25px 0px 0px 25px;
 }
 
-.Login-base {
-  width: 440px;
+.Login-base, .Signup-base {
+  width: 470px;
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 500;
   display: flex;
@@ -154,42 +170,33 @@ body {
   align-items: center;
 }
 
-#password, #email {
-  border-radius: 8px;
-  border-width: 1.5px;
-  font-size: 12px;
-  height: 10px;
-  width: 280px;
-  padding: 13px;
-}
-
 .form-group {
   margin: 12px;
 }
 
-.Login-text {
+.Login-text, .Signup-text {
   font-size: 11px;
 }
 
-.Login-heading {
+.Login-heading, .Signup-heading {
   font-size: 32px;
   font-weight: 400;
 }
 
-.Login-label {
+.Login-label{
   font-size: 10px;
 }
 
-#Login-submit {
+#Login-submit, #Signup-submit {
   color: white;
-  width: 70px;
-  height: 30px;
-  border-radius: 15px;
+  width: 80px;
+  height: 40px;
+  border-radius: 20px;
   background-color: #7E35C5;
   border-color: transparent;
 }
 
-.Signup-now {
+.Signup-now, .Login-now {
   color: #7E35C5;
 }
 
@@ -203,4 +210,51 @@ body {
 .checkbox-group label {
   margin-right: 7px;
   font-weight: 400;
+}
+
+.losign {
+  border-radius: 8px;
+  border: 1px solid black;
+  font-size: 12px;
+  height: 10px;
+  width: 280px;
+  padding: 13px;
+  margin: 2px;
+}
+
+/* Password Criteria list */
+.password-c {
+  font-size: 10px;
+  list-style-type: none;
+  padding-left: 0;
+  text-align: left;
+  font-weight: 200;
+  color: #4B5865;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.signal-box {
+  width: 7px;
+  height: 7px;
+  border: 1px solid #4B5865; /* Adjust the border width and color as needed */
+  border-radius: 7px;
+  background-color: #9AA6B2;
+}
+
+.p-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: space-between;
+  padding: 10px;
+}
+
+.signal-container {
+  display: flex;
+  align-items: center;
+}
+
+.signal-container > li {
+  padding: 0 0 2.5px 5px;
 }
