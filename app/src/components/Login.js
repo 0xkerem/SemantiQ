@@ -19,8 +19,10 @@ export default function Login() {
                 <input type="password" id="password" name="password" placeholder="Password" />
               </div>
               <div className="form-group">
-                <input type="checkbox" id="rememberMe" name="rememberMe" />
-                <label className='Login-label' htmlFor="rememberMe">Remember Me</label>
+                <div className="checkbox-group">
+                  <input type="checkbox" id="rememberMe" name="rememberMe" />
+                  <label className='Login-label' htmlFor="rememberMe">Remember Me</label>
+                </div>
               </div>
               <div className="form-group">
                 <input id="Login-submit" type="submit" value="Sign in" />
