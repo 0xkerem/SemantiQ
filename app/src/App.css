@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&family=Noto+Sans+Kannada&display=swap');
 
 * {
   margin: 0;
@@ -75,6 +76,7 @@ body {
   margin: 20px 50px;
   display: flex;
   justify-content: space-between;
+  z-index: 1;
 }
 
 .homeText {
@@ -93,6 +95,96 @@ body {
   left 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
-  z-index: ;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+  z-index: 0;
+}
+
+.Login {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  background-color: #F3F4F8;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  border-radius: 0px 25px 25px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.login-container > * {
+  margin: 5px;
+}
+
+.Login-box {
+  display: flex;
+  padding: 20px;
+  height: 350px;
+  width: 460px;
+  padding: 0;
+}
+
+.Login-pattern {
+  width: 50px;
+  background: 
+  linear-gradient(45deg, #6419af 25%, transparent 25%, transparent 75%, #6419af 75%, #6419af),
+  linear-gradient(45deg, #6419af 25%, transparent 25%, transparent 75%, #6419af 75%, #6419af);
+  background-color: #8563a7;
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  border-radius: 25px 0px 0px 25px;
+}
+
+.Login-base {
+  width: 410px;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+#password, #email {
+  border-radius: 8px;
+  border-width: 1.5px;
+  font-size: 12px;
+  height: 10px;
+  width: 280px;
+  padding: 13px;
+}
+
+.form-group {
+  margin: 12px;
+}
+
+.Login-text {
+  font-size: 11px;
+}
+
+.Login-heading {
+  font-size: 32px;
+}
+
+.Login-label {
+  font-size: 10px;
+}
+
+#Login-submit {
+  color: white;
+  width: 70px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: #7E35C5;
+  border-color: transparent;
+}
+
+.Signup-now {
+  color: #7E35C5;
 }
