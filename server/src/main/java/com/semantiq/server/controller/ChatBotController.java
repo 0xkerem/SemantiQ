@@ -38,11 +38,6 @@ public class ChatBotController {
             return new ResponseEntity<>("User already has a chat bot.", HttpStatus.FORBIDDEN);
         }
 
-        // Check if the user exceeded the limit
-        //if (user.getBot().getData().getLastUpdated().equals(LocalDate.now())) {
-        //    return new ResponseEntity<>("The user reached daily update limit!", HttpStatus.BAD_REQUEST);
-        //}
-
         // Create bot
         ChatBot chatBot = new ChatBot();
         chatBot.setBotName(botName);
@@ -55,6 +50,37 @@ public class ChatBotController {
 
         return new ResponseEntity<>("Chatbot Created", HttpStatus.OK);
     }
+
+    @PostMapping("/users/{id}/update")
+    public ResponseEntity<?> updateBot(@PathVariable int id, @RequestBody String formData) {
+        User user = userService.findUserById(id);
+
+        // Check if user exists
+        if (user == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        ChatBot chatBot = user.getBot();
+
+        // Check if the user exceeded the limit
+        LocalDate lastUpdated = chatBot.getData().getLastUpdated();
+        if (lastUpdated != null && lastUpdated.equals(LocalDate.now())) {
+            return new ResponseEntity<>("The user reached the daily update limit!", HttpStatus.BAD_REQUEST);
+        }
+
+        // Update bot
+        chatBot = chatbotService.setBotData(chatBot, formData, id);
+        chatBot.getData().setLastUpdated(LocalDate.now()); // Set today's date as last updated
+
+        chatbotService.saveChatBot(chatBot);
+
+        // Set bot for the user and save the user
+        user.setBot(chatBot);
+        userService.saveUser(user);
+
+        return new ResponseEntity<>("Chatbot Updated", HttpStatus.OK);
+    }
+
 
     // If chatId is -1 it means create new chat
     @PostMapping("/{chatBotId}/chat/{chatId}")

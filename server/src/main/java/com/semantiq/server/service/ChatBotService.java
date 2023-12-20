@@ -63,6 +63,7 @@ public class ChatBotService {
     // Method to convert string content to PDF and upload to external API
     public ChatBot setBotData(ChatBot chatBot, String formData, int id) {
         BotData botData = new BotData();
+        botData.setBot(chatBot);
 
         // Save form data in JSON format to specified location
         String formDataPath = saveFormDataToJson(formData, id);
@@ -90,6 +91,18 @@ public class ChatBotService {
             }
         } else {
             System.err.println("PDF conversion failed");
+        }
+
+        // Delete the PDF file after processing
+        try {
+            File fileToDelete = new File(filePath);
+            if (fileToDelete.delete()) {
+                System.out.println("PDF file deleted successfully");
+            } else {
+                System.err.println("Failed to delete PDF file");
+            }
+        } catch (Exception e) {
+            System.err.println("Exception while deleting PDF file: " + e.getMessage());
         }
 
         return chatBot;
