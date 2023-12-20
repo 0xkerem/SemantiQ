@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChatRepo extends JpaRepository<Chat, Integer> {
+  Chat findById(int id);
 }

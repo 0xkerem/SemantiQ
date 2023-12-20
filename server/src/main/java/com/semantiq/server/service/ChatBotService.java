@@ -1,9 +1,12 @@
 package com.semantiq.server.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.semantiq.server.entity.BotData;
+import com.semantiq.server.entity.Chat;
 import com.semantiq.server.entity.ChatBot;
 import com.semantiq.server.repository.BotDataRepo;
 import com.semantiq.server.repository.ChatBotRepo;
+import com.semantiq.server.repository.ChatRepo;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.Document;
@@ -18,14 +21,33 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.JSONArray;
+import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 public class ChatBotService {
     private final ChatBotRepo chatBotRepo;
     private final BotDataRepo botDataRepo;
+    private final ChatRepo chatRepo;
 
-    public ChatBotService(ChatBotRepo chatBotRepo, BotDataRepo botDataRepo) {
+
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    public ChatBotService(ChatBotRepo chatBotRepo, BotDataRepo botDataRepo, ChatRepo chatRepo) {
         this.chatBotRepo = chatBotRepo;
         this.botDataRepo = botDataRepo;
+        this.chatRepo = chatRepo;
     }
 
     // Save or update Chatbot in database
@@ -41,7 +63,15 @@ public class ChatBotService {
     // Method to convert string content to PDF and upload to external API
     public ChatBot setBotData(ChatBot chatBot, String formData, int id) {
         BotData botData = new BotData();
-        botData.setFormData(formData);
+
+        // Save form data in JSON format to specified location
+        String formDataPath = saveFormDataToJson(formData, id);
+        if (formDataPath != null) {
+            botData.setFormData(formDataPath);
+        } else {
+            System.err.println("Failed to save form data as JSON");
+            return null;
+        }
 
         String filePath = "src/main/resources/Files/" + String.valueOf(id) + ".pdf";
         boolean pdfConversionSuccess = convertStringToPDF(formData, filePath);
@@ -63,6 +93,20 @@ public class ChatBotService {
         }
 
         return chatBot;
+    }
+
+    private String saveFormDataToJson(String formData, int id) {
+        try {
+            String filePath = "src/main/resources/Files/FormData/" + id + ".json";
+            Path path = Paths.get(filePath);
+            FileWriter fileWriter = new FileWriter(path.toFile());
+            fileWriter.write(formData);
+            fileWriter.close();
+            return filePath;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // Method for String PDF conversation
@@ -185,15 +229,108 @@ public class ChatBotService {
 
         return sourceId;
     }
+
     private static String parseSourceId(String jsonResponse) {
         JSONObject jsonObject = new JSONObject(jsonResponse);
         return jsonObject.getString("sourceId");
     }
 
+
     // Chat service
     public String askQuestion(int botId, int chatId, String question) {
         ChatBot bot = findChatBotById(botId);
         String sourceId = bot.getData().getSourceId();
-        return sourceId;
+
+        Chat chat;
+        String chatHistoryPath;
+
+        if (chatRepo.findById(chatId) == null || chatId == -1) {
+            chat = new Chat(bot);
+            chat = chatRepo.save(chat);
+            chatHistoryPath = "src/main/resources/Files/Chat/" + chat.getId() + ".json";
+            chat.setChatHistory(chatHistoryPath);
+            chatRepo.save(chat);
+        } else {
+            chat = chatRepo.findById(chatId);
+            chatHistoryPath = chat.getChatHistory();
+        }
+
+        List<Message> chatHistory = getChatHistory(chatHistoryPath);
+
+        // Construct message in the required format
+        Message userMessage = new Message();
+        userMessage.setRole("user");
+        userMessage.setContent(question);
+
+        // Check if chat history exists and append the new message
+        List<Message> messages = new ArrayList<>();
+        if (chatHistory != null) {
+            messages.addAll(chatHistory);
+        }
+        messages.add(userMessage);
+
+        // Prepare JSON payload
+        JSONObject payload = new JSONObject();
+        payload.put("sourceId", sourceId);
+
+        JSONArray messagesArray = new JSONArray();
+        for (Message msg : messages) {
+            JSONObject msgObj = new JSONObject();
+            msgObj.put("role", msg.getRole());
+            msgObj.put("content", msg.getContent());
+            messagesArray.put(msgObj);
+        }
+        payload.put("messages", messagesArray);
+
+        // Make an actual HTTP POST request to the external API
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("x-api-key", "sec_QEql2uXiD7sW0Nq6wbtK1fRuP3yZ5FHm"); // Add API key to the header
+
+        HttpEntity<String> entity = new HttpEntity<>(payload.toString(), headers);
+
+        String apiUrl = "https://api.chatpdf.com/v1/chats/message";
+        ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, entity, String.class);
+
+        // Get the response body
+        String responseBody = response.getBody();
+
+        // Construct message for API response
+        Message apiResponseMessage = new Message();
+        apiResponseMessage.setRole("assistant");
+        apiResponseMessage.setContent(responseBody);
+
+        // Add API response message to chat history
+        messages.add(apiResponseMessage);
+
+        // Save updated chat history to file
+        try {
+            String chatHistoryJson = objectMapper.writeValueAsString(messages);
+            Files.write(Paths.get(chatHistoryPath), chatHistoryJson.getBytes());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        chatRepo.save(chat);
+
+        return responseBody;
+    }
+
+    private List<Message> getChatHistory(String filePath) {
+        try {
+            if (filePath != null) {
+                String content = new String(Files.readAllBytes(Paths.get(filePath)));
+                Message[] messages = objectMapper.readValue(content, Message[].class);
+                return new ArrayList<>(Arrays.asList(messages));
+            } else {
+                System.out.println("File path is null.");
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
     }
 }

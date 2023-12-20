@@ -34,3 +34,6 @@ build/
 
 ### Data ###
 /src/main/resources/Files/*.pdf
+/src/main/java/SDS/
+/src/main/resources/Files/Chat/*.json
+/src/main/resources/Files/FormData/*.json

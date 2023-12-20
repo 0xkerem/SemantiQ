@@ -15,6 +15,14 @@ public class Chat {
     @Column
     private String chatHistory;
 
+    public Chat(ChatBot bot) {
+        this.bot = bot;
+    }
+
+    public Chat() {
+
+    }
+
     public int getId() {
         return id;
     }

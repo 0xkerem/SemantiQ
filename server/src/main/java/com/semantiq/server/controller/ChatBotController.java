@@ -6,13 +6,12 @@ import com.semantiq.server.service.ChatBotService;
 import com.semantiq.server.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
-@Controller
+@RestController
 @RequestMapping("/api/bots")
 
 public class ChatBotController {
@@ -57,8 +56,16 @@ public class ChatBotController {
         return new ResponseEntity<>("Chatbot Created", HttpStatus.OK);
     }
 
+    // If chatId is -1 it means create new chat
     @PostMapping("/{chatBotId}/chat/{chatId}")
     public ResponseEntity<?> ask(@PathVariable int chatBotId, @PathVariable int chatId, @RequestBody String question) {
-        return null;
+        String answer = "";
+        answer = chatbotService.askQuestion(chatBotId, chatId, question);
+
+        if (answer.equals("")) {
+            return new ResponseEntity<>("Problem ", HttpStatus.EXPECTATION_FAILED);
+        } else {
+            return new ResponseEntity<>(answer, HttpStatus.OK);
+        }
     }
 }
