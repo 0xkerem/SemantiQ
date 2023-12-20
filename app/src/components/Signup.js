@@ -219,7 +219,7 @@ export default function Signup() {
                   </div>
                 </div>
                 <div className="form-group">
-                  <input id="Signup-submit" type="submit" value="Sign in" />
+                  <input id="Signup-submit" type="submit" value="Sign up" />
                 </div>
               </form>
             </div>

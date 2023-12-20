@@ -59,6 +59,10 @@ public class ChatBotController {
     // If chatId is -1 it means create new chat
     @PostMapping("/{chatBotId}/chat/{chatId}")
     public ResponseEntity<?> ask(@PathVariable int chatBotId, @PathVariable int chatId, @RequestBody String question) {
+        if (chatbotService.findChatBotById(chatBotId) == null) {
+            return new ResponseEntity<>("There is no bot with id " + String.valueOf(chatBotId), HttpStatus.NOT_FOUND);
+        }
+
         String answer = "";
         answer = chatbotService.askQuestion(chatBotId, chatId, question);
 

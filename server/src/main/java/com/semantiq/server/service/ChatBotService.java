@@ -320,17 +320,20 @@ public class ChatBotService {
 
     private List<Message> getChatHistory(String filePath) {
         try {
-            if (filePath != null) {
-                String content = new String(Files.readAllBytes(Paths.get(filePath)));
-                Message[] messages = objectMapper.readValue(content, Message[].class);
-                return new ArrayList<>(Arrays.asList(messages));
-            } else {
-                System.out.println("File path is null.");
+            Path path = Paths.get(filePath);
+
+            if (!Files.exists(path)) {
+                return new ArrayList<>(); // Return an empty list for now
             }
+
+            String content = new String(Files.readAllBytes(path));
+            Message[] messages = objectMapper.readValue(content, Message[].class);
+            return new ArrayList<>(Arrays.asList(messages));
         } catch (IOException e) {
             System.out.println("Error reading file: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
     }
+
 }
