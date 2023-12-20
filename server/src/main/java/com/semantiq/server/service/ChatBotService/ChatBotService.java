@@ -1,4 +1,4 @@
-package com.semantiq.server.service;
+package com.semantiq.server.service.ChatBotService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.semantiq.server.entity.BotData;
@@ -62,8 +62,7 @@ public class ChatBotService {
 
     // Method to convert string content to PDF and upload to external API
     public ChatBot setBotData(ChatBot chatBot, String formData, int id) {
-        BotData botData = new BotData();
-        botData.setBot(chatBot);
+        BotData botData = (chatBot.getData() != null) ? chatBot.getData() : new BotData();
 
         // Save form data in JSON format to specified location
         String formDataPath = saveFormDataToJson(formData, id);
@@ -247,7 +246,6 @@ public class ChatBotService {
         JSONObject jsonObject = new JSONObject(jsonResponse);
         return jsonObject.getString("sourceId");
     }
-
 
     // Chat service
     public String askQuestion(int botId, int chatId, String question) {

@@ -1,8 +1,10 @@
 package com.semantiq.server.controller;
 
+import com.semantiq.server.entity.BotData;
 import com.semantiq.server.entity.ChatBot;
 import com.semantiq.server.entity.User;
-import com.semantiq.server.service.ChatBotService;
+import com.semantiq.server.service.BotDataService;
+import com.semantiq.server.service.ChatBotService.ChatBotService;
 import com.semantiq.server.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +19,13 @@ import java.time.LocalDate;
 public class ChatBotController {
     private final ChatBotService chatbotService;
     private final UserService userService;
+    private final BotDataService botDataService;
 
     @Autowired
-    public ChatBotController(ChatBotService chatbotService, UserService userService) {
+    public ChatBotController(ChatBotService chatbotService, UserService userService, BotDataService botDataService) {
         this.chatbotService = chatbotService;
         this.userService = userService;
+        this.botDataService = botDataService;
     }
 
     @PostMapping("/{botName}/users/{id}")
@@ -42,7 +46,13 @@ public class ChatBotController {
         ChatBot chatBot = new ChatBot();
         chatBot.setBotName(botName);
         chatBot = chatbotService.setBotData(chatBot, formData, id);
+        chatBot.setOwner(user);
         chatbotService.saveChatBot(chatBot);
+
+        // Set bot data
+        BotData botData = chatBot.getData();
+        botData.setBot(chatBot);
+        botDataService.saveBotData(botData);
 
         // Set bot for the user and save the user
         user.setBot(chatBot);
@@ -93,7 +103,7 @@ public class ChatBotController {
         answer = chatbotService.askQuestion(chatBotId, chatId, question);
 
         if (answer.equals("")) {
-            return new ResponseEntity<>("Problem ", HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity<>("Problem occurred!", HttpStatus.EXPECTATION_FAILED);
         } else {
             return new ResponseEntity<>(answer, HttpStatus.OK);
         }

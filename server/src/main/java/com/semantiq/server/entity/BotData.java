@@ -1,9 +1,6 @@
 package com.semantiq.server.entity;
 
-import SDS.SDC;
-import SDS.Sdo;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 @Entity

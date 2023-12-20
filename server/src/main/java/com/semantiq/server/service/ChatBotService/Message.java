@@ -1,4 +1,4 @@
-package com.semantiq.server.service;
+package com.semantiq.server.service.ChatBotService;
 
 public class Message {
     private String role;
