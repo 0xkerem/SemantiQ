@@ -1,17 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
-import Header from './components/Header';
+import Home from './components/Home';
+import { useState } from 'react';
+import Panel from './components/Panel';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+  }
+
   return (
     <div className="App">
-      <div className='overlay'></div>
-      <header className="App-header">
-        <Header/>
-      </header>
-      <body>
-        <p className='homeText'>„Transform your customer experience <br></br> with state-of-the-art chatbots“</p>
-      </body>
+      {isLoggedIn ? (
+        <Panel />
+      ) : (
+        <Home onLoginSuccess={handleLoginSuccess} />
+      )}
     </div>
   );
 }

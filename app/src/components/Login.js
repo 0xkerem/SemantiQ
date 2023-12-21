@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Signup from './Signup'; // Import your Signup component here
 
-export default function Login() {
+export default function Login({ onLoginSuccess }) {
   const [showSignup, setShowSignup] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
@@ -58,6 +58,7 @@ export default function Login() {
       const data = await response.text();
       // Handle successful login
       console.log(data);
+      onLoginSuccess();
     } catch (error) {
       // Handle network errors or other issues
       console.error('Error:', error);

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Login from './Login';
 import Signup from './Signup';
 
-export default function Header() {
+export default function Header({ onLoginSuccess }) {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
@@ -29,7 +29,7 @@ export default function Header() {
           <button className='Header-login-button' onClick={handleLoginClick}>Log in</button>
           <button className='Header-signup-button' onClick={handleSignupClick}>Sign up</button>
         </div>
-        {showLogin && <Login />}
+        {showLogin && <Login onLoginSuccess={onLoginSuccess} />}
         {showSignup && <Signup />}
       </div>
       {overlayVisible && <div className='back-blur' /> /* Render the overlay based on visibility */}

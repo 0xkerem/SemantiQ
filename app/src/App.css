@@ -5,12 +5,12 @@
   padding: 0;
 }
 
-body {
+/* Home */
+.body {
   z-index: 1;
 }
 
-/* App */
-.App {
+.Home {
   background-image: url('./home.jpg');
   background-position: center;
   background-size: cover;
@@ -18,7 +18,7 @@ body {
   height: 100vh;
 }
 
-.App-header {
+.Home-header {
   margin: 0;
   padding: 0;
 }
@@ -74,12 +74,14 @@ body {
 .Header-login-button:hover {
   color: black;
   background-color: aliceblue;
+  margin-right: 7px;
 }
 
 .Header-signup-button {
   width: 140px;
   height: 50px;
   font-size: 18px;
+  margin-left: 7px;
   border-radius: 75px;
   border: 2.5px solid white;
   border-color: aliceblue;
@@ -96,7 +98,7 @@ body {
   width: 16%;
   margin: 20px 50px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   z-index: 1;
 }
 
