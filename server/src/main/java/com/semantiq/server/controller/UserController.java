@@ -2,7 +2,7 @@ package com.semantiq.server.controller;
 
 import com.semantiq.server.DTO.LoginDTO;
 import com.semantiq.server.DTO.SignupDTO;
-git import com.semantiq.server.DTO.UserDTO;
+import com.semantiq.server.DTO.UserDTO;
 import com.semantiq.server.DTO.VerificationDTO;
 import com.semantiq.server.entity.User;
 import com.semantiq.server.service.EmailService;
