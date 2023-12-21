@@ -17,6 +17,14 @@ export default function Dashboard() {
     { date: '2023-12-06', totalUsage: 43 },
     { date: '2023-12-07', totalUsage: 58 },
     { date: '2023-12-08', totalUsage: 30 },
+    { date: '2023-12-09', totalUsage: 5 },
+    { date: '2023-12-10', totalUsage: 6 },
+    { date: '2023-12-11', totalUsage: 7 },
+    { date: '2023-12-12', totalUsage: 8 },
+    { date: '2023-12-13', totalUsage: 40 },
+    { date: '2023-12-14', totalUsage: 43 },
+    { date: '2023-12-15', totalUsage: 58 },
+    { date: '2023-12-', totalUsage: 30 },
   ];
   
   return (

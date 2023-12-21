@@ -1,31 +1,52 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Chart } from 'chart.js/auto';
 import 'chartjs-adapter-moment';
 
 export default function LineChart({ data }) {
+  const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 240 });
+
+  useEffect(() => {
+    const updateContainerSize = () => {
+      if (chartContainerRef.current) {
+        const width = chartContainerRef.current.clientWidth;
+        const height = chartContainerRef.current.clientHeight;
+        setContainerSize({ width, height });
+      }
+    };
+
+    updateContainerSize();
+    window.addEventListener('resize', updateContainerSize);
+
+    return () => {
+      window.removeEventListener('resize', updateContainerSize);
+    };
+  }, []);
 
   useEffect(() => {
     if (chartRef && chartRef.current && chartRef.current.chartInstance) {
       chartRef.current.chartInstance.destroy();
     }
 
-    const gradient = chartRef.current?.getContext('2d').createLinearGradient(0, 0, 0, 225);
+    const ctx = chartRef.current.getContext('2d');
+
+    const gradient = ctx.createLinearGradient(0, 0, 0, containerSize.height);
     gradient.addColorStop(0, 'rgba(88, 80, 236, 1)');
-    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)'); 
+    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
     const chartData = {
-      labels: data.map((item) => item.date), 
+      labels: data.slice(0, 12).map((item) => item.date),
       datasets: [{
         label: 'Total Usage',
-        data: data.map((item) => item.totalUsage), 
+        data: data.slice(0, 12).map((item) => item.totalUsage),
         fill: {
           target: 'origin',
           above: gradient,
         },
         borderColor: 'rgba(88, 80, 236, 1)',
         tension: 0.6,
-      }]
+      }],
     };
 
     const options = {
@@ -35,37 +56,42 @@ export default function LineChart({ data }) {
         x: {
           type: 'time',
           time: {
-            unit: 'day'
+            unit: 'day',
           },
           grid: {
             display: false,
-          }
+          },
+          max: data.length > 12 ? data[11].date : undefined,
         },
         y: {
           title: {
             display: true,
           },
           grid: {
-            display: false, // Hide vertical grid lines
+            display: false,
           },
-        }
-      }
+        },
+      },
     };
 
-    if (chartRef && chartRef.current) {
-      chartRef.current.chartInstance = new Chart(chartRef.current, {
-        type: 'line',
-        data: chartData,
-        options: options
-      });
-    }
-  }, [data]);
+    const chartInstance = new Chart(ctx, {
+      type: 'line',
+      data: chartData,
+      options: options,
+    });
+
+    chartRef.current.chartInstance = chartInstance;
+    
+    return () => {
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+    };
+  }, [data, containerSize]);
 
   return (
-    <div style={{ height: '240px' }}>
-      <div style={{ maxWidth: '700px', height: '100%' }}>
-        <canvas ref={chartRef} />
-      </div>
+    <div ref={chartContainerRef} style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+      <canvas ref={chartRef} width={containerSize.width} height={containerSize.height} />
     </div>
   );
-};
+}
