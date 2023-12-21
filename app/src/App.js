@@ -5,15 +5,17 @@ import Panel from './components/Panel';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [emailAddress, setEmailAddress] = useState('');
 
-  const handleLoginSuccess = () => {
+  const handleLoginSuccess = (email) => {
+    setEmailAddress(email); // Set the email address received from login
     setIsLoggedIn(true);
   }
 
   return (
     <div className="App">
       {isLoggedIn ? (
-        <Panel />
+        <Panel email={emailAddress} />
       ) : (
         <Home onLoginSuccess={handleLoginSuccess} />
       )}

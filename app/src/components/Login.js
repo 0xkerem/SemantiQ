@@ -58,7 +58,7 @@ export default function Login({ onLoginSuccess }) {
       const data = await response.text();
       // Handle successful login
       console.log(data);
-      onLoginSuccess();
+      onLoginSuccess(email);
     } catch (error) {
       // Handle network errors or other issues
       console.error('Error:', error);

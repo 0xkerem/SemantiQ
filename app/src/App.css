@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Sans+Kannada&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Noto+Sans+JP:wght@400;500&family=Noto+Sans+Kannada&display=swap');
 
 * {
   margin: 0;
@@ -69,12 +69,12 @@
   border: 2.5px solid aliceblue;
   background-color: transparent;
   font-family: 'Noto Sans Kannada', sans-serif;
+  margin-right: 7px;
 }
 
 .Header-login-button:hover {
   color: black;
   background-color: aliceblue;
-  margin-right: 7px;
 }
 
 .Header-signup-button {
@@ -269,4 +269,78 @@
 
 .signal-container > li {
   padding: 0 0 2.5px 5px;
+}
+
+/* Panel */
+.Panel-body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Create update bot window */
+.CreateUpdate-body {
+  background-color: #F3F4F8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.CreateUpdate-body > div {
+  margin-bottom: 15px; 
+}
+
+.botform {
+  border-radius: 8px;
+  border: 1px solid black;
+  font-size: 14px;
+  height: 10px;
+  width: 580px;
+  padding: 13px;
+  margin: 20px 2px;
+}
+
+.botform:focus {
+  outline: 2px solid #5850EC;
+}
+
+.botform-ta {
+  border-radius: 8px;
+  border: 1px solid black;
+  font-size: 14px;
+  padding: 13px;
+  margin: 20px 2px;
+  width: 580px;
+  height: 80px;
+}
+
+.botform-ta:focus {
+  outline: 2px solid #5850EC;
+}
+
+.botform-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.botformButton {
+  font-family: 'Inter', sans-serif;
+  color: white;
+  background-color: #5850EC;
+  width: 135px;
+  height: 55px;
+  font-size: 18;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 0 solid;
+}
+
+.botformSection > hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.new-user-alert {
+  padding: 25px;
+  background-color: rgb(204, 131, 118);
 }
