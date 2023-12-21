@@ -1,0 +1,1 @@
+Chat history of the chatbots will be stored in this location in JSON format.
