@@ -26,6 +26,42 @@ export default function Login({ onLoginSuccess }) {
     localStorage.setItem('rememberMe', checked ? 'true' : 'false');
   };
 
+  const verify = (code, email) => {
+    const xhr = new XMLHttpRequest();
+    const endpoint = `http://localhost:8080/api/users/${email}/verify`;
+  
+    xhr.open('POST', endpoint, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+  
+    // Define what happens on successful response
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        // Successful verification
+        alert('Email address has been successfully verified.');
+      } else if (xhr.status === 400) {
+        // Verification failed due to wrong code
+        alert('Verification code did not match! Try again.');
+        // Re-invoke verify function to try again
+        verify(code);
+      }
+    };
+  
+    // Handle network errors
+    xhr.onerror = function () {
+      alert('There was a network error.');
+      // Re-invoke verify function to try again
+      verify(code);
+    };
+  
+    // Create a data object to send in the request body
+    const data = JSON.stringify({
+      code: code
+    });
+  
+    // Send the request
+    xhr.send(data);
+  };  
+
   const handleLogin = async (event) => {
     event.preventDefault();
     const email = event.target.email.value;
@@ -51,8 +87,12 @@ export default function Login({ onLoginSuccess }) {
         return;
       } else if (response.status === 403) {
         alert('User not verified! Please verify your email address.');
+        let verificationCode = prompt("Enter the verification code sent to your e-mail address.");
+        verify(verificationCode, email)
+        return;
       } else if (response.status === 404) {
-        alert("User not found!")        
+        alert("User not found!")
+        return;
       }
 
       const data = await response.text();

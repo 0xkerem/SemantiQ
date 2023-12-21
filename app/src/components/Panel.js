@@ -3,16 +3,32 @@ import Dashboard from './Dashboard';
 import Create from './Create';
 
 export default function Panel({ email }) {
-  // Set new document title
-  useEffect(() => {
-    document.title = "SemantiQ - Dashboard";
-  }, []);
+  const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const [hasBot, setHasBot] = useState(false);
+  useEffect(() => {
+    // Send a request to fetch user data
+    fetch(`http://localhost:8080/api/users/${email}/load`)
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.botId !== -1) {
+          setUserId(data.id); // Save the user ID from the response
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching user data:', error);
+        setLoading(false);
+      });
+  }, [email]);
+
+  if (loading) {
+    return <p>Loading...</p>; // Render a loading indicator while fetching data
+  }
 
   return (
     <div className='Panel-body'>
-      {hasBot ? (
+      {userId !== null && userId !== -1 ? (
         <Dashboard />
       ) : (
         <div>
@@ -23,7 +39,7 @@ export default function Panel({ email }) {
               </p>
             </div>
           </center>
-          <Create />
+          <Create userId={userId} />
         </div>
       )}
     </div>

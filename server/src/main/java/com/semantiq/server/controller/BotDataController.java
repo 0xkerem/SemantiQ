@@ -17,17 +17,17 @@ public class BotDataController {
         this.botDataService = botDataService;
     }
 
-    @PostMapping("/upvote/{chatBotId}")
+    //@PostMapping("/upvote/{chatBotId}")
     // countPos'u bir arttır (parametre chatbotun id'si)
     // BotDataService'in içinde de implemente edilip burada fonskiyon gibi çağırılabilir.
     // yorumları sil
     // yapılan arttırmalar veritabanına kaydeilmesi için işlem bitince servisin içindeki saveBotData kullanılmalı
 
-    @PostMapping("/downvote/{chatBotId}")
+    //@PostMapping("/downvote/{chatBotId}")
     // countNeg'i bir arttır (parametre chatbotun id'si)
 
-    @GetMapping("/{chatBotId}/votes")
+    //@GetMapping("/{chatBotId}/votes")
     // vote sayılarını json olarak geri döndür
 
-    @GetMapping("/{chatBotId}") // bu şimdilik durabilir formdatatı geri döndürecek
+    //@GetMapping("/{chatBotId}") // bu şimdilik durabilir formdatatı geri döndürecek
 }

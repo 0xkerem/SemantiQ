@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function Create({ userId }) {
   const [botName, setBotName] = useState('');
@@ -11,6 +11,11 @@ export default function Create({ userId }) {
       webAddress: ''
     }
   ]);
+
+    // Set document title
+    useEffect(() => {
+      document.title = "SemantiQ - Create Chatbot"
+    }, [])
 
   const handleAddSection = () => {
     setSections([...sections, { sectionName: '', sectionInfo: '', webAddress: '' }]);
