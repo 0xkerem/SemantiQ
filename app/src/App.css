@@ -1,16 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Sans+Kannada&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Noto+Sans+JP:wght@400;500&family=Noto+Sans+Kannada&display=swap');
 
 * {
   margin: 0;
   padding: 0;
 }
 
-body {
+/* Home */
+.body {
   z-index: 1;
 }
 
-/* App */
-.App {
+.Home {
   background-image: url('./home.jpg');
   background-position: center;
   background-size: cover;
@@ -18,7 +18,7 @@ body {
   height: 100vh;
 }
 
-.App-header {
+.Home-header {
   margin: 0;
   padding: 0;
 }
@@ -69,6 +69,7 @@ body {
   border: 2.5px solid aliceblue;
   background-color: transparent;
   font-family: 'Noto Sans Kannada', sans-serif;
+  margin-right: 7px;
 }
 
 .Header-login-button:hover {
@@ -80,6 +81,7 @@ body {
   width: 140px;
   height: 50px;
   font-size: 18px;
+  margin-left: 7px;
   border-radius: 75px;
   border: 2.5px solid white;
   border-color: aliceblue;
@@ -96,7 +98,7 @@ body {
   width: 16%;
   margin: 20px 50px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   z-index: 1;
 }
 
@@ -267,4 +269,234 @@ body {
 
 .signal-container > li {
   padding: 0 0 2.5px 5px;
+}
+
+/* Panel */
+.Panel-body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Create update bot window */
+.CreateUpdate-body {
+  background-color: #F3F4F8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.CreateUpdate-body > div {
+  margin-bottom: 15px; 
+}
+
+.botform {
+  border-radius: 8px;
+  border: 1px solid black;
+  font-size: 14px;
+  height: 10px;
+  width: 580px;
+  padding: 13px;
+  margin: 20px 2px;
+}
+
+.botform:focus {
+  outline: 2px solid #5850EC;
+}
+
+.botform-ta {
+  border-radius: 8px;
+  border: 1px solid black;
+  font-size: 14px;
+  padding: 13px;
+  margin: 20px 2px;
+  width: 580px;
+  height: 80px;
+}
+
+.botform-ta:focus {
+  outline: 2px solid #5850EC;
+}
+
+.botform-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.botformButton {
+  font-family: 'Inter', sans-serif;
+  color: white;
+  background-color: #5850EC;
+  width: 135px;
+  height: 55px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 0 solid;
+}
+
+.botformButton:hover {
+  border: 2px solid #5850EC;
+  background-color: white;
+  color: #5850EC;
+}
+
+.botformSection > hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.new-user-alert {
+  padding: 25px;
+  background-color: rgb(204, 131, 118);
+}
+
+/* Dashboard */
+.Dashboard-body {
+  background-color: #F9FAFB;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+.db {
+  background-color: white;
+}
+
+.db-top {
+  display: flex;
+  height: 10%;
+  width: 100%;
+}
+
+.db-t2 {
+  height: 100%;
+  width: 50%;
+}
+
+.db-t1 {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 25%;
+}
+
+.db-t3 {
+  display: flex;
+  justify-content: flex-end;
+  height: 100%;
+  width: 25%;
+}
+
+.db-main {
+  display: flex;
+  height: 90%;
+  width: 100%;
+}
+
+.db-stats {
+  height: 100%;
+  width: 50%;
+}
+
+.db-main-bottom {
+  display: flex;
+  height: 45%;
+  width: 100%;
+  margin: 2.5% 0;
+}
+
+.db-usage {
+  height: 46%;
+  width: 96%;
+  margin: 2%;
+  box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.1);
+}
+
+.db-chatlist {
+  height: 100%;
+  width: 46.5%;
+  margin: 0 1.5% 0 2%;
+  box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.1);
+}
+
+.db-happy {
+  height: 100%;
+  width: 46.5%;
+  margin: 0 2% 0 1.5%;
+  box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.1);
+}
+
+.db-chathistory {
+  height: 100%;
+  width: 25%;
+}
+
+.db-chat {
+  height: 100%;
+  width: 25%;
+}
+
+.db-chathistorybox {
+  height: 94%;
+  width: 94%;
+  margin: 3%;
+  box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.1);
+}
+
+.db-h2 {
+  font-size: 18px;
+  padding: 10px;
+}
+
+.db-update {
+  font-family: 'Inter', sans-serif;
+  color: white;
+  background-color: #5850EC;
+  width: 135px;
+  height: 55px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 0 solid;
+  margin: 10px;
+}
+
+.db-update:hover {
+  border: 2px solid #5850EC;
+  background-color: white;
+  color: #5850EC;
+}
+
+.db-user-circle {
+  height: 43px;
+  width: 43px;
+  border-radius: 25px;
+  background-color: #5850EC;
+  margin-left: 10px;
+}
+
+.db-user-text {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.db-user-block {
+  display: flex;
+  padding: 15px;
+  margin: 5px;
+  border-radius: 15px;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.1);
+}
+
+.db-user-block:hover {
+  border: 2px solid #5850EC;
+  background-color: white;
 }
