@@ -16,6 +16,8 @@ public class UserDTO {
     // The email of the user
     private String email;
 
+    private int botId = -1;
+
     public int getId() {
         return id;
     }
@@ -54,5 +56,13 @@ public class UserDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getBotId() {
+        return botId;
+    }
+
+    public void setBotId(int botId) {
+        this.botId = botId;
     }
 }

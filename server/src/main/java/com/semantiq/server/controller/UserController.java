@@ -111,6 +111,10 @@ public class UserController {
         userDTO.setSurname(user.getSurname());
         userDTO.setEmail(user.getEmail());
 
+        if (user.getBot() != null) {
+            userDTO.setBotId(user.getBot().getId());
+        }
+
         // Return UserDTO in the ResponseEntity with HTTP status OK (200)
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
