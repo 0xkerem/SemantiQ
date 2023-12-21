@@ -2,6 +2,7 @@ package com.semantiq.server.controller;
 
 import com.semantiq.server.DTO.LoginDTO;
 import com.semantiq.server.DTO.SignupDTO;
+import com.semantiq.server.DTO.UserDTO;
 import com.semantiq.server.DTO.VerificationDTO;
 import com.semantiq.server.entity.User;
 import com.semantiq.server.service.EmailService;
@@ -72,7 +73,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{email}/bots")
-    public ResponseEntity <?> deleteBotForUser(@PathVariable String email) {
+    public ResponseEntity<?> deleteBotForUser(@PathVariable String email) {
         if (userService.deleteBot(email)) {
             return new ResponseEntity<>("Bot removed!", HttpStatus.OK);
         } else {
@@ -81,7 +82,7 @@ public class UserController {
     }
 
     @PostMapping("/{email}/verify")
-    public ResponseEntity <?> verify(@PathVariable String email, @RequestBody VerificationDTO vDTO) {
+    public ResponseEntity<?> verify(@PathVariable String email, @RequestBody VerificationDTO vDTO) {
         // Check if user is already verified
         if (userService.findUserByEmail(email).isVerified()) {
             return new ResponseEntity<>("The user is already verified!", HttpStatus.BAD_REQUEST);
@@ -94,4 +95,23 @@ public class UserController {
         }
     }
 
+    @GetMapping("/{email}/load")
+    public ResponseEntity<UserDTO> load(@PathVariable String email) {
+        User user = userService.findUserByEmail(email);
+
+        if (user == null) {
+            // Handle the case where the user is not found
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setCompany(user.getCompany());
+        userDTO.setName(user.getName());
+        userDTO.setSurname(user.getSurname());
+        userDTO.setEmail(user.getEmail());
+
+        // Return UserDTO in the ResponseEntity with HTTP status OK (200)
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+    }
 }

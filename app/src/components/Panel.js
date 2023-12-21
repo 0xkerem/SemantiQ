@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Dashboard from './Dashboard';
-import CreateUpdate from './CreateUpdate';
+import Create from './Create';
 
 export default function Panel({ email }) {
   // Set new document title
@@ -23,7 +23,7 @@ export default function Panel({ email }) {
               </p>
             </div>
           </center>
-          <CreateUpdate />
+          <Create />
         </div>
       )}
     </div>

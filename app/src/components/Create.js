@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function CreateUpdate({ userId }) {
+export default function Create({ userId }) {
   const [botName, setBotName] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [companyWebAddress, setCompanyWebAddress] = useState('');
