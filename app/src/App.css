@@ -287,6 +287,13 @@
   padding: 20px;
 }
 
+.Create-log-out {
+  position: fixed;
+  top: 20px;
+  right: 10px;
+  z-index: 10;
+}
+
 .CreateUpdate-body > div {
   margin-bottom: 15px; 
 }
@@ -549,4 +556,10 @@
   'wght' 400,
   'GRAD' 0,
   'opsz' 24
+}
+
+.Update-back-button {
+  position: fixed;
+  top: 20px;
+  left: 10px;
 }

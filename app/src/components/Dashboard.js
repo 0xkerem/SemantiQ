@@ -1,8 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PieChart from './PieChart'
 import LineChart from './LineChart'
+import Update from './Update'
 
 export default function Dashboard() {
+  const [showUpdate, setShowUpdate] = useState(false);
+
   // Set document title
   useEffect(() => {
     document.title = "SemantiQ - Dashboard"
@@ -14,6 +17,10 @@ export default function Dashboard() {
     localStorage.removeItem('emailAddress');
     // Refresh the page to apply changes after logout
     window.location.reload();
+  };
+
+  const handleUpdateButtonClick = () => {
+    setShowUpdate(true);
   };
 
   const exampleData = [
@@ -34,72 +41,75 @@ export default function Dashboard() {
     { date: '2023-12-15', totalUsage: 58 },
     { date: '2023-12-', totalUsage: 30 },
   ];
-  
-  return (
-    <div className='Dashboard-body'>
-      <div className='db-top'>
-        <div className='db-t1'>
-          <button className='db-update'>Update Bot</button>
-        </div>
-        <div className='db-t2'></div>
-        <div className='db-t3'>
-          <div className='db-user-block'>
-            <div className='db-user-circle'></div>
-            <div>
-              <p className='db-user-text'>User</p>
-            </div>
-            <span className='material-symbols-outlined' onClick={handleLogout}>
-              Logout
-            </span>
+
+  if (showUpdate) {
+    return <Update />;
+  } else {
+    return (
+      <div className='Dashboard-body'>
+        <div className='db-top'>
+          <div className='db-t1'>
+            <button className='db-update' onClick={handleUpdateButtonClick}>Update Bot</button>
           </div>
-        </div>
-      </div>
-      <div className='db-main'>
-        <div className='db-chathistory'>
-          <div className='db-chathistorybox db'>
-            <div>
-              <h2 className='db-h2'>View Chat</h2>
+          <div className='db-t2'></div>
+          <div className='db-t3'>
+            <div className='db-user-block'>
+              <div className='db-user-circle'></div>
+              <div>
+                <p className='db-user-text'>User</p>
+              </div>
+              <span className='material-symbols-outlined' onClick={handleLogout}>
+                Logout
+              </span>
             </div>
           </div>
         </div>
-        <div className='db-stats'>
-          <div className='db-usage db'>
-            <div>
-              <h2 className='db-h2'>Chatbot Usage Stats</h2>
-              <div className='db-lc'>
-                <LineChart data={exampleData} />
+        <div className='db-main'>
+          <div className='db-chathistory'>
+            <div className='db-chathistorybox db'>
+              <div>
+                <h2 className='db-h2'>View Chat</h2>
               </div>
             </div>
           </div>
-          <div className='db-main-bottom'>
-            <div className='db-chatlist db'>
+          <div className='db-stats'>
+            <div className='db-usage db'>
               <div>
-                <h2 className='db-h2'>Chat History</h2>
-              </div>
-            </div>
-            <div className='db-happy db'>
-              <div>
-                <h2 className='db-h2'>Customer Happiness</h2>
-                <div className='pie-container'>
-                  <PieChart positive={80} negative={20} />
-                </div>
-                <div className="pie-legend">
-                  <div className="legend-item">
-                    <div className="color-block" style={{ backgroundColor: '#686EBD' }}></div>
-                    <span className="legend-text">Positive</span>
-                  </div>
-                  <div className="legend-item">
-                    <div className="color-block" style={{ backgroundColor: '#939ADF' }}></div>
-                    <span className="legend-text">Negative</span>
-                  </div>
+                <h2 className='db-h2'>Chatbot Usage Stats</h2>
+                <div className='db-lc'>
+                  <LineChart data={exampleData} />
                 </div>
               </div>
             </div>
+            <div className='db-main-bottom'>
+              <div className='db-chatlist db'>
+                <div>
+                  <h2 className='db-h2'>Chat History</h2>
+                </div>
+              </div>
+              <div className='db-happy db'>
+                <div>
+                  <h2 className='db-h2'>Customer Happiness</h2>
+                  <div className='pie-container'>
+                    <PieChart positive={80} negative={20} />
+                  </div>
+                  <div className="pie-legend">
+                    <div className="legend-item">
+                      <div className="color-block" style={{ backgroundColor: '#686EBD' }}></div>
+                      <span className="legend-text">Positive</span>
+                    </div>
+                    <div className="legend-item">
+                      <div className="color-block" style={{ backgroundColor: '#939ADF' }}></div>
+                      <span className="legend-text">Negative</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='db-chat'>
           </div>
         </div>
-        <div className='db-chat'>
-        </div>
       </div>
-    </div>
-  )
+  )}
 }

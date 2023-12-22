@@ -21,6 +21,14 @@ export default function Create({ userId }) {
     setSections([...sections, { sectionName: '', sectionInfo: '', webAddress: '' }]);
   };
 
+  // Function to handle logout and clear local storage
+  const handleLogout = () => {
+    localStorage.setItem('rememberMe', 'false');
+    localStorage.removeItem('emailAddress');
+    // Refresh the page to apply changes after logout
+    window.location.reload();
+  };
+
   const handleSectionChange = (index, event) => {
     const { name, value } = event.target;
     const updatedSections = [...sections];
@@ -35,9 +43,9 @@ export default function Create({ userId }) {
       companyWebAddress,
       sections
     };
-
+  
     console.log(formData);
-
+  
     // Sending the form data as JSON in the request body
     fetch(`http://localhost:8080/api/bots/${botName}/users/${userId}`, {
       method: 'POST',
@@ -47,9 +55,15 @@ export default function Create({ userId }) {
       body: JSON.stringify(formData)
     })
       .then(response => {
-        // Handle the response
-        console.log('Response:', response);
-        // You can add further logic here for success/error handling
+        // Check if the response is OK (status code 200)
+        if (response.ok) {
+          // Page refresh upon successful response
+          window.location.reload();
+        } else {
+          // Handle other response status codes (e.g., error messages)
+          console.log('Response:', response);
+          // You can add further logic here for different status codes
+        }
       })
       .catch(error => {
         // Handle errors
@@ -59,6 +73,11 @@ export default function Create({ userId }) {
 
   return (
     <div className='CreateUpdate-body'>
+      <div className='Create-log-out'>
+        <span className='material-symbols-outlined' onClick={handleLogout}>
+          Logout
+        </span>
+      </div>
       <div>
         <div className='botform-item'>
           <label htmlFor="botName">Bot Name:</label>
