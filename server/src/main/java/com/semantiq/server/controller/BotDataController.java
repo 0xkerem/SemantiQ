@@ -1,33 +1,76 @@
 package com.semantiq.server.controller;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.semantiq.server.DTO.VoteDto;
+import com.semantiq.server.entity.BotData;
+import com.semantiq.server.entity.ChatBot;
 import com.semantiq.server.service.BotDataService;
+import com.semantiq.server.service.ChatBotService.ChatBotService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.InvalidParameterException;
 
 @RestController
 @RequestMapping("/api/botdata")
 public class BotDataController {
     private final BotDataService botDataService;
+    private final ChatBotService chatBotService;
 
     @Autowired
-    public BotDataController(BotDataService botDataService) {
+    public BotDataController(BotDataService botDataService, ChatBotService chatBotService) {
         this.botDataService = botDataService;
+        this.chatBotService = chatBotService;
     }
 
-    @PostMapping("/upvote/{chatBotId}")
+    @PostMapping("/voteBot/{chatBotId}/{vote}")
     // countPos'u bir arttır (parametre chatbotun id'si)
     // BotDataService'in içinde de implemente edilip burada fonskiyon gibi çağırılabilir.
     // yorumları sil
     // yapılan arttırmalar veritabanına kaydeilmesi için işlem bitince servisin içindeki saveBotData kullanılmalı
+    public ResponseEntity<?> voteBot(@PathVariable int chatBotId, @PathVariable int vote){
+        ChatBot chatBot = chatBotService.findChatBotById(chatBotId);
+        if (chatBot == null) {
+            return new ResponseEntity<>("ChatBot not found", HttpStatus.NOT_FOUND);
+        }
 
-    @PostMapping("/downvote/{chatBotId}")
-    // countNeg'i bir arttır (parametre chatbotun id'si)
+        BotData botData = chatBot.getData();
+
+        if (botData == null){
+            return new ResponseEntity<>("BotData not found", HttpStatus.NOT_FOUND);
+        }
+        try{
+            botDataService.voteBot(botData, vote);
+        }catch(InvalidParameterException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>("ChatBot upvote", HttpStatus.OK);
+    }
+
+
 
     @GetMapping("/{chatBotId}/votes")
     // vote sayılarını json olarak geri döndür
+    public ResponseEntity<?> getVotes(@PathVariable int chatBotId){
+        ChatBot chatBot = chatBotService.findChatBotById(chatBotId);
+        if (chatBot == null) {
+            return new ResponseEntity<>("ChatBot not found", HttpStatus.NOT_FOUND);
+        }
+        BotData botData = chatBot.getData();
 
-    @GetMapping("/{chatBotId}") // bu şimdilik durabilir formdatatı geri döndürecek
+        if (botData == null){
+            return new ResponseEntity<>("BotData not found", HttpStatus.NOT_FOUND);
+        }
+
+        VoteDto votes = new VoteDto();
+        votes.setCountPos(botData.getCountPos());
+        votes.setCountNeg(botData.getCountNeg());
+
+        return ResponseEntity.status(HttpStatus.OK).body(votes);
+    }
+    //@GetMapping("/{chatBotId}") // bu şimdilik durabilir formdatatı geri döndürecek
 }
