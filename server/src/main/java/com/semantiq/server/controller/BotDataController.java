@@ -34,7 +34,7 @@ public class BotDataController {
     }
 
     @PostMapping("/voteBot/{chatBotId}/{vote}")
-    public ResponseEntity<?> voteBot(@PathVariable int chatBotId, @PathVariable int vote){
+    public ResponseEntity<?> voteBot(@PathVariable int chatBotId, @PathVariable String vote, @PathVariable int chatId){
         ChatBot chatBot = chatBotService.findChatBotById(chatBotId);
         if (chatBot == null) {
             return new ResponseEntity<>("ChatBot not found", HttpStatus.NOT_FOUND);
@@ -51,7 +51,9 @@ public class BotDataController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>("ChatBot upvote", HttpStatus.OK);
+        chatService.setVote(chatId, vote);
+
+        return new ResponseEntity<>("ChatBot voted", HttpStatus.OK);
     }
 
     @GetMapping("/{chatBotId}/votes")

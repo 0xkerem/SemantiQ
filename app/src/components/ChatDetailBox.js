@@ -31,7 +31,7 @@ export default function ChatDetailBox({ chatBotId, onChatClick }) {
           onClick={() => handleChatClick(chat.Id)}
           style={{ cursor: 'pointer', color: chat.vote === 1 ? 'green' : chat.vote === -1 ? 'red' : 'inherit' }}
         >
-          {chat.Id} - {chat.date} - {chat.vote === 1 ? '+' : chat.vote === -1 ? '-' : ''}
+          {chat.Id} - {chat.date} - {chat.vote === "1" ? '+' : chat.vote === "-1" ? '-' : ''}
         </div>
       ))}
     </div>

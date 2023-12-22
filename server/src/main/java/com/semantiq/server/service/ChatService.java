@@ -29,4 +29,12 @@ public class ChatService {
     public Map<LocalDate, Long> getChatCountByDateRange(int botId, LocalDate startDate, LocalDate endDate) {
         return chatRepo.getChatCountByBotAndDateRange(botId, startDate, endDate);
     }
+
+    public void setVote(int chatId, String vote) {
+        Chat chat = findChatById(chatId);
+        if (vote.equals("1")) chat.setVote("1");
+        else if (vote.equals("-1")) chat.setVote("-1");
+
+        chatRepo.save(chat);
+    }
 }
