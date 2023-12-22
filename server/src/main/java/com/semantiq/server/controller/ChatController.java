@@ -50,13 +50,14 @@ public class ChatController {
         }
     }
 
-    @GetMapping("/{id}/data")
-    public ResponseEntity<?> loadChatData(@PathVariable int id, @RequestBody String email) {
+    @GetMapping("/{id}/data/{email}")
+    public ResponseEntity<?> loadChatData(@PathVariable int id, @PathVariable String email) {
         User user = userService.findUserByEmail(email);
+        System.out.println(email);
         Chat chat = chatService.findChatById(id);
 
-        // Check if user has access to this bot
-        if (user.getBot().getId() == chat.getBot().getId()) {
+        // Check if user exists and has access to this chat
+        if (user != null && chat != null && user.getBot().getId() == chat.getBot().getId()) {
             ChatDTO chatDTO = new ChatDTO();
             chatDTO.setId(chat.getId());
             chatDTO.setDatetime(chat.getDatetime());
@@ -65,7 +66,7 @@ public class ChatController {
 
             return new ResponseEntity<>(chatDTO, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("You don't have access to this chat.", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("You don't have access to this chat or invalid email.", HttpStatus.UNAUTHORIZED);
         }
     }
 

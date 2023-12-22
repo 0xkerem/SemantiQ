@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import PieChart from './PieChart'
-import LineChart from './LineChart'
-import Update from './Update'
+import React, { useEffect, useState, useCallback } from 'react';
+import PieChart from './PieChart';
+import LineChart from './LineChart';
+import Update from './Update';
 import ChatDetailBox from './ChatDetailBox';
 import axios from 'axios';
 
@@ -9,8 +9,11 @@ export default function Dashboard({ userData }) {
   const [voteData, setVoteData] = useState({ countPos: 0, countNeg: 0 });
   const [showUpdate, setShowUpdate] = useState(false);
   const [chatData, setChatData] = useState([]);
+  const [chatVote, setChatVote] = useState([]);
+  const [chatID, setChatId] = useState([]);
+  const [chatHistory, setchatHistory] = useState([]);
 
-  const fetchVoteData = async () => {
+  const fetchVoteData = useCallback(async () => {
     try {
       const chatBotId = userData.botId;
       const response = await axios.get(`http://localhost:8080/api/botdata/${chatBotId}/votes`);
@@ -18,37 +21,89 @@ export default function Dashboard({ userData }) {
     } catch (error) {
       console.error('Error fetching vote data:', error);
     }
-  };
+  }, [userData.botId]);
 
   useEffect(() => {
     // Fetch vote data when component mounts
     fetchVoteData();
-  }, [userData.botId]); // Ensure to update when userData.botId changes
-  
- 
-  const handleUpdateButtonClick = () => {
-    setShowUpdate(true);
-  };
-  
-  const fetchData = async () => {
+  }, [fetchVoteData]);
+
+  const fetchData = useCallback(async () => {
     try {
       const chatBotId = userData.botId;
-      
       const response = await axios.get(`http://localhost:8080/api/botdata/bots/${chatBotId}/chats-count`);
       setChatData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  };
+  }, [userData.botId]);
+
+  useEffect(() => {
+    // Fetch data when component mounts
+    fetchData();
+  }, [fetchData]);
+
+  const fetchChatData = useCallback(async (chatId) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/chats/${chatId}/data/${userData.email}`);
+      const data = response.data;
+      setChatId(data.id);
+      setChatVote(data.vote);
+
+    } catch (error) {
+      alert(`The Chat with ${chatId} is not belong to your chatbot!`)
+      console.error('Error fetching chat data:', error)
+    }
+  }, [userData.email]);
+
+  const combineMessages = (data) => {
+    let combinedString = '';
   
+    data.forEach((item) => {
+      const content = JSON.parse(item.content);
+  
+      if (item.role === 'user') {
+        combinedString += `[User] : ${content.question}\n`;
+      } else if (item.role === 'assistant') {
+        combinedString += `[Assistant] : ${content.content}\n`;
+      }
+    });
+  
+    return combinedString;
+  };
+
+  const fetchChatHistory = useCallback(async (chatId) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/chats/${chatId}`);
+      console.log(response.data)
+      const data = response.data;
+      setchatHistory(combineMessages(data))
+
+    } catch (error) {
+      console.error('Error fetching chat data:', error)
+    }
+  }, []);
+
+  const handleUpdateButtonClick = () => {
+    setShowUpdate(true);
+  };
+
+  const handleInputChange = useCallback((event) => {
+    const id = event.target.value;
+    if (id !== "") {
+      fetchChatData(id);
+      fetchChatHistory(id);
+    } else {
+      setchatHistory("");
+      setChatId("");
+      setChatVote("");
+    }
+  }, [fetchChatData]);
+
   // Set document title
   useEffect(() => {
     document.title = "SemantiQ - Dashboard";
-
-    // Fetch data when component mounts
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty dependency array to run only on mount
+  }, []);
 
   // Function to handle logout and clear local storage
   const handleLogout = () => {
@@ -86,17 +141,22 @@ export default function Dashboard({ userData }) {
               <div className='db-ch-basecontainer'>
                 <h2 className='db-h2'>View Chat</h2>
                   <center>
-                    <input className='db-ch-input' type='text' placeholder='Enter Chat #ID'></input>
+                    <input
+                      className='db-ch-input'
+                      type='text'
+                      placeholder='Enter Chat #ID'
+                      onChange={handleInputChange}></input>
                   </center>
                   <center>
                     <div className='db-ch-ln2container'>
-                      <div className='db-ch-chatid'>#3532</div>
-                      <div className='db-ch-chatvote'>+</div>
+                      <div className='db-ch-chatid'>#{chatID}</div>
+                      <div className='db-ch-chatvote'>{chatVote}</div>
                     </div>
                   </center>
                   <div></div>
                 <center>
-                  <div className='db-ch-detailbox'>
+                  <div className='db-ch-basecontainer'>
+                  <div className='db-ch-detailbox'>{chatHistory}</div>
                   </div>
                 </center>
               </div>

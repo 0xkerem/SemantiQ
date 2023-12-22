@@ -585,11 +585,17 @@
   padding: 2%;
 }
 
+.db-ch-basecontainer {
+  width: 100%;
+  overflow-y: auto;
+}
+
 .db-ch-detailbox {
-  width: 85%;
-  max-width: 90%;
+  width: 80%;
   border: 1px solid #4B5865;
   border-radius: 12px;
+  padding: 15px;
+  overflow-y: hidden;
 }
 
 .db-ch-ln2container {
@@ -614,4 +620,24 @@
 
 .db-ch-basecontainer {
   height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #5850EC;
+  border-radius: 6px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #585757;
 }
