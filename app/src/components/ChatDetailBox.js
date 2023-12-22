@@ -9,7 +9,12 @@ export default function ChatDetailBox({ chatBotId, onChatClick }) {
       try {
         const response = await axios.get(`http://localhost:8080/api/chats/bots/${chatBotId}`);
         if (response.status === 200) {
-          setChats(response.data);
+          const formattedChats = response.data.map(chat => ({
+            id: chat.id,
+            date: new Date(chat.datetime).toLocaleString(), // Format date as needed
+            vote: chat.vote
+          }));
+          setChats(formattedChats);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -20,18 +25,32 @@ export default function ChatDetailBox({ chatBotId, onChatClick }) {
   }, [chatBotId]);
 
   const handleChatClick = (chatId) => {
-    onChatClick(chatId); // Sends the signal to the parent component with the clicked chat ID
+    onChatClick(chatId);
   };
 
   return (
-    <div style={{ maxHeight: '300px', overflowY: 'scroll' }}>
+    <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
       {chats.map((chat) => (
         <div
-          key={chat.Id}
-          onClick={() => handleChatClick(chat.Id)}
-          style={{ cursor: 'pointer', color: chat.vote === 1 ? 'green' : chat.vote === -1 ? 'red' : 'inherit' }}
+          className='cdb-container'
+          key={chat.id}
+          onClick={() => handleChatClick(chat.id)}
+          style={{
+            cursor: 'pointer',
+          }}
         >
-          {chat.Id} - {chat.date} - {chat.vote === "1" ? '+' : chat.vote === "-1" ? '-' : ''}
+          <div className='cdb-1'>#{chat.id}</div>
+          <div className='cdb-2'>{chat.date}</div>
+          <div className='cdb-3' 
+          style={{
+            color: chat.vote == "\"1\"" ? 'green' : chat.vote ==  "\"-1\"" ? 'red' : 'inherit'
+          }}
+          >{chat.vote == "\"1\"" ? <span class="material-symbols-outlined">
+          sentiment_satisfied
+          </span> : chat.vote == "\"-1\"" ? <span class="material-symbols-outlined">
+          sentiment_dissatisfied
+          </span> : ''}
+          </div>
         </div>
       ))}
     </div>

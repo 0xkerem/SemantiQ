@@ -75,7 +75,6 @@ export default function Dashboard({ userData }) {
   const fetchChatHistory = useCallback(async (chatId) => {
     try {
       const response = await axios.get(`http://localhost:8080/api/chats/${chatId}`);
-      console.log(response.data)
       const data = response.data;
       setchatHistory(combineMessages(data))
 
@@ -99,6 +98,17 @@ export default function Dashboard({ userData }) {
       setChatVote("");
     }
   }, [fetchChatData]);
+
+  const onChatClick = useCallback((id) => {
+    if (id !== "") {
+      fetchChatData(id);
+      fetchChatHistory(id);
+    } else {
+      setchatHistory("");
+      setChatId("");
+      setChatVote("");
+    }
+  }, []);
 
   // Set document title
   useEffect(() => {
@@ -150,7 +160,13 @@ export default function Dashboard({ userData }) {
                   <center>
                     <div className='db-ch-ln2container'>
                       <div className='db-ch-chatid'>#{chatID}</div>
-                      <div className='db-ch-chatvote'>{chatVote}</div>
+                      <div className='db-ch-chatvote'
+                      style={{
+                        color: chatVote == "\"1\"" ? 'green' : chatVote ==  "\"-1\"" ? 'red' : 'inherit'
+                      }}
+                      >{
+                        chatVote == "\"1\"" ? <span class="material-symbols-outlined">sentiment_satisfied</span>
+                         : chatVote == "\"-1\"" ? <span class="material-symbols-outlined">sentiment_dissatisfied</span> : ''}</div>
                     </div>
                   </center>
                   <div></div>
@@ -189,7 +205,7 @@ export default function Dashboard({ userData }) {
                     </div>
                   </div>
                 </div>
-                <ChatDetailBox chatBotId={userData.botId}/>
+                <ChatDetailBox chatBotId={userData.botId} onChatClick={onChatClick}/>
               </div>
               <div className='db-happy db'>
                 <div>
