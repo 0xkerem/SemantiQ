@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.security.InvalidParameterException;
+
 @Service
 public class BotDataService {
     private final BotDataRepo botDataRepo;
@@ -22,4 +24,19 @@ public class BotDataService {
         botDataRepo.save(botData);
     }
 
+    public void voteBot(BotData botData, int vote){
+        int newCount;
+        if(vote == 1){
+            newCount = botData.getCountPos() + 1;
+            botData.setCountPos(newCount);
+        }
+        else if (vote == -1){
+            newCount = botData.getCountNeg() + 1;
+            botData.setCountNeg(newCount);
+        }
+        else{
+           throw new InvalidParameterException("Vote Parameter should be either 1 or -1");
+        }
+        botDataRepo.save(botData);
+    }
 }

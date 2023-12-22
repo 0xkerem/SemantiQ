@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.InvalidParameterException;
+
 @RestController
 @RequestMapping("/api/botdata")
 public class BotDataController {
@@ -24,12 +26,12 @@ public class BotDataController {
         this.chatBotService = chatBotService;
     }
 
-    @PostMapping("/upvote/{chatBotId}")
+    @PostMapping("/voteBot/{chatBotId}/{vote}")
     // countPos'u bir arttır (parametre chatbotun id'si)
     // BotDataService'in içinde de implemente edilip burada fonskiyon gibi çağırılabilir.
     // yorumları sil
     // yapılan arttırmalar veritabanına kaydeilmesi için işlem bitince servisin içindeki saveBotData kullanılmalı
-    public ResponseEntity<?> upvoteBot(@PathVariable int chatBotId){
+    public ResponseEntity<?> voteBot(@PathVariable int chatBotId, @PathVariable int vote){
         ChatBot chatBot = chatBotService.findChatBotById(chatBotId);
         if (chatBot == null) {
             return new ResponseEntity<>("ChatBot not found", HttpStatus.NOT_FOUND);
@@ -40,31 +42,15 @@ public class BotDataController {
         if (botData == null){
             return new ResponseEntity<>("BotData not found", HttpStatus.NOT_FOUND);
         }
-        int botDataCountPos = botData.getCountPos() + 1;
+        try{
+            botDataService.voteBot(botData, vote);
+        }catch(InvalidParameterException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
 
-        botData.setCountPos(botDataCountPos);
-        botDataService.saveBotData(botData);
         return new ResponseEntity<>("ChatBot upvote", HttpStatus.OK);
     }
-    @PostMapping("/downvote/{chatBotId}")
-    // countNeg'i bir arttır (parametre chatbotun id'si)
-    public ResponseEntity<?> downvoteBot(@PathVariable int chatBotId){
-        ChatBot chatBot = chatBotService.findChatBotById(chatBotId);
-        if (chatBot == null) {
-            return new ResponseEntity<>("ChatBot not found", HttpStatus.NOT_FOUND);
-        }
 
-        BotData botData = chatBot.getData();
-
-        if (botData == null){
-            return new ResponseEntity<>("BotData not found", HttpStatus.NOT_FOUND);
-        }
-        int botDataCountNeg = botData.getCountNeg() + 1;
-
-        botData.setCountNeg(botDataCountNeg);
-        botDataService.saveBotData(botData);
-        return new ResponseEntity<>("ChatBot downvote", HttpStatus.OK);
-    }
 
 
     @GetMapping("/{chatBotId}/votes")
