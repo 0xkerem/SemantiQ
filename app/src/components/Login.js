@@ -9,6 +9,8 @@ export default function Login({ onLoginSuccess }) {
     const rememberMeValue = localStorage.getItem('rememberMe');
     if (rememberMeValue && rememberMeValue === 'true') {
       setRememberMe(true);
+    } else {
+      setRememberMe(false)
     }
   }, []);
 
@@ -22,8 +24,8 @@ export default function Login({ onLoginSuccess }) {
 
   const handleRememberMeChange = (event) => {
     const { checked } = event.target;
-    setRememberMe(checked);
     localStorage.setItem('rememberMe', checked ? 'true' : 'false');
+    setRememberMe(checked);
   };
 
   const verify = (code, email) => {

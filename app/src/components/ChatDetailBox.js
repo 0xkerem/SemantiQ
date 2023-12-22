@@ -7,7 +7,7 @@ export default function ChatDetailBox({ chatBotId, onChatClick }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/chats/bots/${chatBotId}/`);
+        const response = await axios.get(`http://localhost:8080/api/chats/bots/${chatBotId}`);
         if (response.status === 200) {
           setChats(response.data);
         }

@@ -551,6 +551,7 @@
 }
 
 .material-symbols-outlined {
+  cursor: pointer;
   font-variation-settings:
   'FILL' 0,
   'wght' 400,

@@ -73,7 +73,7 @@ public class BotDataController {
         return ResponseEntity.status(HttpStatus.OK).body(votes);
     }
 
-    @GetMapping("/{chatBotId}/chats-count-last-15-days")
+    @GetMapping("/bots/{chatBotId}/chats-count")
     public ResponseEntity<?> getChatsCountLast15Days(@PathVariable int chatBotId) {
         LocalDate today = LocalDate.now();
         LocalDate fifteenDaysAgo = today.minusDays(14); // 15 days ago

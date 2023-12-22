@@ -3,14 +3,52 @@ import PieChart from './PieChart'
 import LineChart from './LineChart'
 import Update from './Update'
 import ChatDetailBox from './ChatDetailBox';
+import axios from 'axios';
 
 export default function Dashboard({ userData }) {
+  const [voteData, setVoteData] = useState({ countPos: 0, countNeg: 0 });
   const [showUpdate, setShowUpdate] = useState(false);
+  const [chatData, setChatData] = useState([]);
 
+  const fetchVoteData = async () => {
+    try {
+      const chatBotId = userData.botId;
+      const response = await axios.get(`http://localhost:8080/api/botdata/${chatBotId}/votes`);
+      setVoteData(response.data);
+    } catch (error) {
+      console.error('Error fetching vote data:', error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch vote data when component mounts
+    fetchVoteData();
+  }, [userData.botId]); // Ensure to update when userData.botId changes
+  
+ 
+  const handleUpdateButtonClick = () => {
+    setShowUpdate(true);
+  };
+  
+  const fetchData = async () => {
+    try {
+      const chatBotId = userData.botId;
+      
+      const response = await axios.get(`http://localhost:8080/api/botdata/bots/${chatBotId}/chats-count`);
+      setChatData(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  
   // Set document title
   useEffect(() => {
-    document.title = "SemantiQ - Dashboard"
-  }, [])
+    document.title = "SemantiQ - Dashboard";
+
+    // Fetch data when component mounts
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array to run only on mount
 
   // Function to handle logout and clear local storage
   const handleLogout = () => {
@@ -19,28 +57,6 @@ export default function Dashboard({ userData }) {
     // Refresh the page to apply changes after logout
     window.location.reload();
   };
-
-  const handleUpdateButtonClick = () => {
-    setShowUpdate(true);
-  };
-
-  const exampleData = [
-    { date: '2023-12-01', totalUsage: 5 },
-    { date: '2023-12-02', totalUsage: 6 },
-    { date: '2023-12-03', totalUsage: 17 },
-    { date: '2023-12-04', totalUsage: 18 },
-    { date: '2023-12-05', totalUsage: 40 },
-    { date: '2023-12-06', totalUsage: 33 },
-    { date: '2023-12-07', totalUsage: 38 },
-    { date: '2023-12-08', totalUsage: 30 },
-    { date: '2023-12-09', totalUsage: 15 },
-    { date: '2023-12-10', totalUsage: 16 },
-    { date: '2023-12-11', totalUsage: 7 },
-    { date: '2023-12-12', totalUsage: 18 },
-    { date: '2023-12-13', totalUsage: 40 },
-    { date: '2023-12-14', totalUsage: 23 },
-    { date: '2023-12-15', totalUsage: 38 },
-  ];
 
   if (showUpdate) {
     return <Update />;
@@ -91,7 +107,7 @@ export default function Dashboard({ userData }) {
               <div>
                 <h2 className='db-h2'>Chatbot Usage Stats</h2>
                 <div className='db-lc'>
-                  <LineChart data={exampleData} />
+                  <LineChart data={chatData} />
                 </div>
               </div>
             </div>
@@ -113,13 +129,13 @@ export default function Dashboard({ userData }) {
                     </div>
                   </div>
                 </div>
-                <ChatDetailBox />
+                <ChatDetailBox chatBotId={userData.botId}/>
               </div>
               <div className='db-happy db'>
                 <div>
                   <h2 className='db-h2'>Customer Happiness</h2>
                   <div className='pie-container'>
-                    <PieChart positive={80} negative={20} />
+                    <PieChart positive={voteData.countPos} negative={voteData.countNeg} />
                   </div>
                   <div className="pie-legend">
                     <div className="legend-item">

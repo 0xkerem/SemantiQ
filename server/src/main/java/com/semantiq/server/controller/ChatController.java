@@ -69,7 +69,7 @@ public class ChatController {
         }
     }
 
-    @GetMapping("/bot/{botId}/")
+    @GetMapping("/bots/{botId}/")
     public ResponseEntity<?> getAllChatsForBot(@PathVariable int botId) {
         List<Chat> botChats = chatService.findAllChatsForBot(botId);
         List<ChatDTO> chatDTOs = new ArrayList<>();

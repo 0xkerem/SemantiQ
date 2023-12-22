@@ -27,7 +27,6 @@ function App() {
     setIsLoggedIn(true);
 
     // If remember me is checked, store the email and rememberMe value in local storage
-    localStorage.setItem('rememberMe', 'true');
     localStorage.setItem('emailAddress', email);
   };
 
