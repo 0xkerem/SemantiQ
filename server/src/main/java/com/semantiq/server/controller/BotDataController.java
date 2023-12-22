@@ -77,24 +77,7 @@ public class BotDataController {
 
     @GetMapping("/bots/{chatBotId}/chats-count")
     public ResponseEntity<?> getChatsCountLast15Days(@PathVariable int chatBotId) {
-        LocalDate today = LocalDate.now();
-        LocalDate fifteenDaysAgo = today.minusDays(14); // 15 days ago
-
-        Map<LocalDate, Long> chatCountsByDate = chatService.getChatCountByDateRange(chatBotId, fifteenDaysAgo, today);
-
-        List<ObjectNode> chatCountData = new ArrayList<>();
-        for (LocalDate date = fifteenDaysAgo; !date.isAfter(today); date = date.plusDays(1)) {
-            long chatCount = chatCountsByDate.getOrDefault(date, 0L);
-
-            ObjectNode data = JsonNodeFactory.instance.objectNode();
-            data.put("date", date.toString());
-            data.put("totalUsage", chatCount);
-
-            chatCountData.add(data);
-        }
-
-        return ResponseEntity.ok(chatCountData);
+        List<Map<String, Object>> chatCounts = chatService.getChatsCountLast15Days(chatBotId);
+        return ResponseEntity.status(HttpStatus.OK).body(chatCounts);
     }
-
-    //@GetMapping("/{chatBotId}") // bu şimdilik durabilir formdatatı geri döndürecek
 }

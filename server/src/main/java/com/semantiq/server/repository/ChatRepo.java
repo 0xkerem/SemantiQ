@@ -12,15 +12,18 @@ import java.util.Map;
 
 @Repository
 public interface ChatRepo extends JpaRepository<Chat, Integer> {
-  Chat findById(int id);
-  List<Chat> findAllByBotId(int botId);
+    Chat findById(int id);
+    List<Chat> findAllByBotId(int botId);
 
-    @Query("SELECT DATE(c.datetime) AS date, COUNT(c) AS chatCount " +
-            "FROM Chat c " +
-            "WHERE c.bot.id = :botId " +
-            "AND DATE(c.datetime) BETWEEN :startDate AND :endDate " +
-            "GROUP BY DATE(c.datetime)")
-    Map<LocalDate, Long> getChatCountByBotAndDateRange(@Param("botId") int botId,
+    @Query(value = "SELECT DATE(datetime) as date, COUNT(*) as totalUsage " +
+            "FROM Chat " +
+            "WHERE chatbot_id = :chatBotId AND DATE(datetime) BETWEEN :startDate AND :endDate " +
+            "GROUP BY DATE(datetime) " +
+            "ORDER BY DATE(datetime) DESC " +
+            "LIMIT 15", nativeQuery = true)
+    List<Map<String, Object>> findChatsCountLast15Days(@Param("chatBotId") int chatBotId,
                                                        @Param("startDate") LocalDate startDate,
                                                        @Param("endDate") LocalDate endDate);
 }
+
+

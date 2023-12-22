@@ -26,15 +26,18 @@ public class ChatService {
         return chatRepo.findAllByBotId(botId);
     }
 
-    public Map<LocalDate, Long> getChatCountByDateRange(int botId, LocalDate startDate, LocalDate endDate) {
-        return chatRepo.getChatCountByBotAndDateRange(botId, startDate, endDate);
-    }
-
     public void setVote(int chatId, String vote) {
         Chat chat = findChatById(chatId);
         if (vote.equals("1")) chat.setVote("1");
         else if (vote.equals("-1")) chat.setVote("-1");
 
         chatRepo.save(chat);
+    }
+
+    public List<Map<String, Object>> getChatsCountLast15Days(int chatBotId) {
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusDays(14); // 15 days ago
+
+        return chatRepo.findChatsCountLast15Days(chatBotId, startDate, endDate);
     }
 }
