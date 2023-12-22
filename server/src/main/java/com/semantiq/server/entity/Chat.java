@@ -2,6 +2,9 @@ package com.semantiq.server.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "chat")
 public class Chat {
@@ -14,6 +17,12 @@ public class Chat {
 
     @Column
     private String chatHistory;
+
+    @Column
+    private LocalDateTime datetime;
+
+    @Column
+    private String vote = null;
 
     public Chat(ChatBot bot) {
         this.bot = bot;
@@ -37,6 +46,22 @@ public class Chat {
 
     public void setBot(ChatBot bot) {
         this.bot = bot;
+    }
+
+    public LocalDateTime getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(LocalDateTime datetime) {
+        this.datetime = datetime;
+    }
+
+    public String getVote() {
+        return vote;
+    }
+
+    public void setVote(String vote) {
+        this.vote = vote;
     }
 
     public String getChatHistory() {

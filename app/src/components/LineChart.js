@@ -35,11 +35,13 @@ export default function LineChart({ data }) {
     gradient.addColorStop(0, 'rgba(88, 80, 236, 1)');
     gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
+    const lastTwelveDaysData = data.slice(-12); // Take the last 12 days of data
+
     const chartData = {
-      labels: data.slice(0, 12).map((item) => item.date),
+      labels: lastTwelveDaysData.map((item) => item.date),
       datasets: [{
         label: 'Total Usage',
-        data: data.slice(0, 12).map((item) => item.totalUsage),
+        data: lastTwelveDaysData.map((item) => item.totalUsage),
         fill: {
           target: 'origin',
           above: gradient,
@@ -61,7 +63,7 @@ export default function LineChart({ data }) {
           grid: {
             display: false,
           },
-          max: data.length > 12 ? data[11].date : undefined,
+          max: data.length > 12 ? data[data.length - 1].date : undefined, // Set max date to the last date in the provided data
         },
         y: {
           title: {
@@ -81,7 +83,7 @@ export default function LineChart({ data }) {
     });
 
     chartRef.current.chartInstance = chartInstance;
-    
+
     return () => {
       if (chartInstance) {
         chartInstance.destroy();

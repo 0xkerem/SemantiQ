@@ -3,7 +3,7 @@ import Dashboard from './Dashboard';
 import Create from './Create';
 
 export default function Panel({ email }) {
-  const [userId, setUserId] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -11,9 +11,7 @@ export default function Panel({ email }) {
     fetch(`http://localhost:8080/api/users/${email}/load`)
       .then(response => response.json())
       .then(data => {
-        if (data && data.botId !== -1) {
-          setUserId(data.id); // Save the user ID from the response
-        }
+        setUserData(data); // Save the entire user data from the response
         setLoading(false);
       })
       .catch(error => {
@@ -28,8 +26,8 @@ export default function Panel({ email }) {
 
   return (
     <div className='Panel-body'>
-      {userId !== null && userId !== -1 ? (
-        <Dashboard />
+      {userData && userData.botId !== -1 ? (
+        <Dashboard userData={userData} />
       ) : (
         <div>
           <center>
@@ -39,7 +37,7 @@ export default function Panel({ email }) {
               </p>
             </div>
           </center>
-          <Create userId={userId} />
+          <Create userData={userData.userID} />
         </div>
       )}
     </div>

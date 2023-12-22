@@ -563,3 +563,54 @@
   top: 20px;
   left: 10px;
 }
+
+.db-cl-head {
+  border: 1px solid #939ADF;
+  border-radius: 15px 15px 0 0;
+  width: 90%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ch-container {
+  display: flex;
+  justify-content: center;
+}
+
+.db-cl-head-element {
+  height: 60%;
+  padding: 2%;
+}
+
+.db-ch-detailbox {
+  width: 85%;
+  max-width: 90%;
+  border: 1px solid #4B5865;
+  border-radius: 12px;
+}
+
+.db-ch-ln2container {
+  display: flex;
+  justify-content: space-between;
+  padding: 2%;
+  width: 85%;
+}
+
+.db-ch-input {
+  width: 80%;
+  height: 40px;
+  border-radius: 12px;
+  border: 0.5px solid #4B5865;
+  padding: 2px 10px;
+  margin: 2% 0;
+}
+
+.db-ch-input:focus {
+  outline: 2px solid #5850EC;
+}
+
+.db-ch-basecontainer {
+  height: 100%;
+}

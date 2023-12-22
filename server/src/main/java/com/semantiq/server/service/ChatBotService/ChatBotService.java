@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -260,6 +261,7 @@ public class ChatBotService {
             chat = chatRepo.save(chat);
             chatHistoryPath = "src/main/resources/Files/Chat/" + chat.getId() + ".json";
             chat.setChatHistory(chatHistoryPath);
+            chat.setDatetime(LocalDateTime.now());
             chatRepo.save(chat);
         } else {
             chat = chatRepo.findById(chatId);
