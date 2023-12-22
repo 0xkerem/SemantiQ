@@ -8,6 +8,14 @@ export default function Dashboard() {
     document.title = "SemantiQ - Dashboard"
   }, [])
 
+  // Function to handle logout and clear local storage
+  const handleLogout = () => {
+    localStorage.setItem('rememberMe', 'false');
+    localStorage.removeItem('emailAddress');
+    // Refresh the page to apply changes after logout
+    window.location.reload();
+  };
+
   const exampleData = [
     { date: '2023-12-01', totalUsage: 5 },
     { date: '2023-12-02', totalUsage: 6 },
@@ -36,8 +44,13 @@ export default function Dashboard() {
         <div className='db-t2'></div>
         <div className='db-t3'>
           <div className='db-user-block'>
-            <div><p className='db-user-text'>User</p></div>
             <div className='db-user-circle'></div>
+            <div>
+              <p className='db-user-text'>User</p>
+            </div>
+            <span className='material-symbols-outlined' onClick={handleLogout}>
+              Logout
+            </span>
           </div>
         </div>
       </div>

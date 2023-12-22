@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&family=Noto+Sans+JP:wght@400;500&family=Noto+Sans+Kannada&display=swap');
 
+
 * {
   margin: 0;
   padding: 0;
@@ -487,6 +488,7 @@
 .db-user-text {
   font-weight: 600;
   font-size: 18px;
+  margin: 0 10px;
 }
 
 .db-user-block {
@@ -539,4 +541,12 @@
 
 .db-lc {
   padding: 0 15px 15px 15px;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
 }
