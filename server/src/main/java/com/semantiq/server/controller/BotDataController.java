@@ -1,7 +1,5 @@
 package com.semantiq.server.controller;
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.semantiq.server.DTO.VoteDto;
 import com.semantiq.server.entity.BotData;
 import com.semantiq.server.entity.ChatBot;
@@ -14,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidParameterException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +29,8 @@ public class BotDataController {
         this.chatService = chatService;
     }
 
-    @PostMapping("/voteBot/{chatBotId}/{vote}")
-    public ResponseEntity<?> voteBot(@PathVariable int chatBotId, @PathVariable String vote, @PathVariable int chatId){
+    @PostMapping("/{chatBotId}/chats/{chatId}/{vote}")
+    public ResponseEntity<?> voteBot(@PathVariable int chatBotId, @PathVariable int vote, @PathVariable int chatId){
         ChatBot chatBot = chatBotService.findChatBotById(chatBotId);
         if (chatBot == null) {
             return new ResponseEntity<>("ChatBot not found", HttpStatus.NOT_FOUND);

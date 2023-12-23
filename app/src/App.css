@@ -854,3 +854,19 @@
   padding: 8px;
   border-radius: 5px;
 }
+
+.chat-buttons > button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  margin: 2px;
+  font-weight: 600;
+}
+
+.chat-buttons {
+  display: flex;
+  justify-content: center;
+  width: 30%;
+  margin-right: 5px;
+}

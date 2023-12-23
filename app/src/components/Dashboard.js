@@ -162,11 +162,11 @@ export default function Dashboard({ userData }) {
                   <div className='db-ch-chatid'>#{chatID}</div>
                   <div className='db-ch-chatvote'
                   style={{
-                    color: chatVote === "\"1\"" ? 'green' : chatVote ===  "\"-1\"" ? 'red' : 'inherit'
+                    color: chatVote === "1" ? 'green' : chatVote ===  "-1" ? 'tomato' : 'inherit'
                   }}
                   >{
-                    chatVote === "\"1\"" ? <span class="material-symbols-outlined">sentiment_satisfied</span>
-                      : chatVote === "\"-1\"" ? <span class="material-symbols-outlined">sentiment_dissatisfied</span> : ''}</div>
+                    chatVote === "1" ? <span class="material-symbols-outlined">sentiment_satisfied</span>
+                      : chatVote === "-1" ? <span class="material-symbols-outlined">sentiment_dissatisfied</span> : ''}</div>
                 </div>
               </center>
               <center>

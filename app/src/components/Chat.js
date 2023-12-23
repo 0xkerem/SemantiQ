@@ -25,9 +25,32 @@ export default function Chat({ botId }) {
     // Copy code to clipboard (implementation required)
     // Alert message (implementation required)
   };
+  
+  const votePositive = () => {
+    sendVote(1);
+  };
+
+  const voteNegative = () => {
+    sendVote(-1);
+  };
+
+  const sendVote = (vote) => {
+    // Determine the chatId for the vote
+    const chatId = messages.length > 0 ? messages[messages.length - 1].chatId : -1;
+
+    // Sending a POST request to vote
+    axios.post(`http://localhost:8080/api/botdata/${botId}/chats/${chatId}/${vote}`)
+      .then(response => {
+        // Handle successful vote response if needed
+        console.log(`Voted ${vote === 1 ? 'positive' : 'negative'}`);
+      })
+      .catch(error => {
+        console.error('Error sending vote:', error);
+      });
+  };
 
   const sendMessage = (e) => {
-    e.preventDefault(); // Prevents the default form submission behavior
+    e.preventDefault();
   
     if (inputText.trim() === '') return;
   
@@ -40,7 +63,6 @@ export default function Chat({ botId }) {
     const chatId = messages.length === 0 ? -1 : messages[messages.length - 1].chatId;
     axios.post(`http://localhost:8080/api/bots/${botId}/chat/${chatId}`, {
         question: inputText,
-        // Include any necessary data for the message
       })
       .then(response => {
         let newAssistantMessage = response.data.answer.content;
@@ -62,12 +84,22 @@ export default function Chat({ botId }) {
       });
   };
   
-
   return (
     <div className='message-body'>
         <div className="chat-header">
           <span style={{ margin: '15px' }}>{botName}</span>
-          <button style={{ margin: '15px' }} onClick={generateCode}>{'</>'}</button>
+          <div className='chat-buttons'>
+            <button style={{ color: 'white' }} onClick={generateCode}>{'</>'}</button>
+            <button onClick={votePositive}>
+              <span style={{ color: 'white', display: 'flex', alignItems: 'center' }}
+                className="material-symbols-outlined">thumb_up</span>
+            </button>
+            <button onClick={voteNegative}>
+              <span style={{ color: 'white', display: 'flex', alignItems: 'center' }} 
+                className="material-symbols-outlined">thumb_down
+              </span>
+            </button>
+          </div>
         </div>
         <div className='chat-main'>
           <div className="chat-messages">
@@ -92,7 +124,7 @@ export default function Chat({ botId }) {
               onChange={(e) => setInputText(e.target.value)}
             />
             <button className="message-send-btn" type="submit">
-              <span style={{ color: 'white', display: 'flex', alignItems: 'center' }} class="material-symbols-outlined">send</span>
+              <span style={{ color: 'white', display: 'flex', alignItems: 'center' }} className="material-symbols-outlined">send</span>
             </button>
           </form>
         </div>

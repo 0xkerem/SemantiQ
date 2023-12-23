@@ -24,13 +24,13 @@ public class BotDataService {
         botDataRepo.save(botData);
     }
 
-    public void voteBot(BotData botData, String vote){
+    public void voteBot(BotData botData, int vote){
         int newCount;
-        if(vote == "1"){
+        if(vote == 1){
             newCount = botData.getCountPos() + 1;
             botData.setCountPos(newCount);
         }
-        else if (vote == "-1"){
+        else if (vote == -1){
             newCount = botData.getCountNeg() + 1;
             botData.setCountNeg(newCount);
         }

@@ -26,10 +26,9 @@ public class ChatService {
         return chatRepo.findAllByBotId(botId);
     }
 
-    public void setVote(int chatId, String vote) {
+    public void setVote(int chatId, int vote) {
         Chat chat = findChatById(chatId);
-        if (vote.equals("1")) chat.setVote("1");
-        else if (vote.equals("-1")) chat.setVote("-1");
+        chat.setVote(String.valueOf(vote)); // Convert int to String
 
         chatRepo.save(chat);
     }
