@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/api/email")
-
 public class EmailController {
     private final EmailService emailService;
     private final UserService userService;
@@ -19,7 +18,6 @@ public class EmailController {
         this.emailService = emailService;
         this.userService = userService;
     }
-
 
     @PostMapping("/send")
     public ResponseEntity <?> sendEmail(@RequestParam int userId, @RequestParam String message) {

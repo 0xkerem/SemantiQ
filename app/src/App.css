@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&family=Noto+Sans+JP:wght@400;500&family=Noto+Sans+Kannada&display=swap');
 
-
 * {
   margin: 0;
   padding: 0;
@@ -698,7 +697,7 @@
 }
 
 .message {
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 8px;
   margin: 4px;
   max-width: 85%;
@@ -844,15 +843,6 @@
 .message-container.assistant {
   align-self: flex-end;
   width: 60%;
-}
-
-.message-container {
-  margin-bottom: 10px;
-}
-
-.message {
-  padding: 8px;
-  border-radius: 5px;
 }
 
 .chat-buttons > button {

@@ -17,6 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/botdata")
+@CrossOrigin(origins = "*")
 public class BotDataController {
     private final BotDataService botDataService;
     private final ChatBotService chatBotService;

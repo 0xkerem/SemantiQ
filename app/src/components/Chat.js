@@ -18,13 +18,34 @@ export default function Chat({ botId }) {
   }, [botId]);
 
   const generateCode = () => {
-    // Generate code to add chatbot to user's webpage
-    // Copy code to clipboard (use document.execCommand('copy'))
-    // Alert the user that the code has been copied
-    const generatedCode = `<Your chatbot code>`;
-    // Copy code to clipboard (implementation required)
-    // Alert message (implementation required)
+    const generatedCode = `
+      <div id="semantiq-chatbot"></div>
+      <script data-bot-id="${botId}" defer="defer" src="http://localhost:8080/static/main.ea9881ca.js"></script>
+      <script>
+        var link = document.createElement("link");
+        link.href = "http://localhost:8080/static/main.ba187d75.css";
+        link.rel = "stylesheet";
+        document.head.appendChild(link);
+      </script>
+    `;
+
+    copyToClipboard(generatedCode);
+  
+    // Alert message to indicate code has been copied
+    alert('Code successfully copied to clipboard! To integrate the chatbox, insert the script elements just before the closing </body> tag, and place the div with the ID "seamntiq-chatbot" wherever you want the chatbox to appear.');
   };
+
+  function copyToClipboard(text) {
+    const el = document.createElement('textarea');
+    el.value = text;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+  }
   
   const votePositive = () => {
     sendVote(1);
@@ -114,7 +135,7 @@ export default function Chat({ botId }) {
               </div>
             ))}
           </div>
-
+          
           <form onSubmit={sendMessage} className="message-input">
             <input
               className='Chat-input'
