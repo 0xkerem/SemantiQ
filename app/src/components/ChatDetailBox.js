@@ -29,7 +29,7 @@ export default function ChatDetailBox({ chatBotId, onChatClick }) {
   };
 
   return (
-    <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+    <div style={{ maxHeight: '300px' }}>
       {chats.map((chat) => (
         <div
           className='cdb-container'
@@ -43,11 +43,11 @@ export default function ChatDetailBox({ chatBotId, onChatClick }) {
           <div className='cdb-2'>{chat.date}</div>
           <div className='cdb-3' 
           style={{
-            color: chat.vote == "\"1\"" ? 'green' : chat.vote ==  "\"-1\"" ? 'red' : 'inherit'
+            color: chat.vote === "\"1\"" ? 'green' : chat.vote ===  "\"-1\"" ? 'red' : 'inherit'
           }}
-          >{chat.vote == "\"1\"" ? <span class="material-symbols-outlined">
+          >{chat.vote === "\"1\"" ? <span className="material-symbols-outlined">
           sentiment_satisfied
-          </span> : chat.vote == "\"-1\"" ? <span class="material-symbols-outlined">
+          </span> : chat.vote === "\"-1\"" ? <span className="material-symbols-outlined">
           sentiment_dissatisfied
           </span> : ''}
           </div>

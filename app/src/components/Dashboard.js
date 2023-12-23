@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PieChart from './PieChart';
 import LineChart from './LineChart';
+import Chat from './Chat';
 import Update from './Update';
 import ChatDetailBox from './ChatDetailBox';
 import axios from 'axios';
@@ -148,34 +149,31 @@ export default function Dashboard({ userData }) {
         <div className='db-main'>
           <div className='db-chathistory'>
             <div className='db-chathistorybox db'>
-              <div className='db-ch-basecontainer'>
-                <h2 className='db-h2'>View Chat</h2>
-                  <center>
-                    <input
-                      className='db-ch-input'
-                      type='text'
-                      placeholder='Enter Chat #ID'
-                      onChange={handleInputChange}></input>
-                  </center>
-                  <center>
-                    <div className='db-ch-ln2container'>
-                      <div className='db-ch-chatid'>#{chatID}</div>
-                      <div className='db-ch-chatvote'
-                      style={{
-                        color: chatVote == "\"1\"" ? 'green' : chatVote ==  "\"-1\"" ? 'red' : 'inherit'
-                      }}
-                      >{
-                        chatVote == "\"1\"" ? <span class="material-symbols-outlined">sentiment_satisfied</span>
-                         : chatVote == "\"-1\"" ? <span class="material-symbols-outlined">sentiment_dissatisfied</span> : ''}</div>
-                    </div>
-                  </center>
-                  <div></div>
-                <center>
-                  <div className='db-ch-basecontainer'>
+              <h2 className='db-h2'>View Chat</h2>
+              <center>
+                <input
+                  className='db-ch-input'
+                  type='text'
+                  placeholder='Enter Chat #ID'
+                  onChange={handleInputChange}></input>
+              </center>
+              <center>
+                <div className='db-ch-ln2container'>
+                  <div className='db-ch-chatid'>#{chatID}</div>
+                  <div className='db-ch-chatvote'
+                  style={{
+                    color: chatVote === "\"1\"" ? 'green' : chatVote ===  "\"-1\"" ? 'red' : 'inherit'
+                  }}
+                  >{
+                    chatVote === "\"1\"" ? <span class="material-symbols-outlined">sentiment_satisfied</span>
+                      : chatVote === "\"-1\"" ? <span class="material-symbols-outlined">sentiment_dissatisfied</span> : ''}</div>
+                </div>
+              </center>
+              <center>
+                <div className='db-ch-dbcontainer'>
                   <div className='db-ch-detailbox'>{chatHistory}</div>
-                  </div>
-                </center>
-              </div>
+                </div>
+              </center>
             </div>
           </div>
           <div className='db-stats'>
@@ -205,7 +203,9 @@ export default function Dashboard({ userData }) {
                     </div>
                   </div>
                 </div>
-                <ChatDetailBox chatBotId={userData.botId} onChatClick={onChatClick}/>
+                <div className='detailbox-container'>
+                  <ChatDetailBox chatBotId={userData.botId} onChatClick={onChatClick}/>
+                </div>
               </div>
               <div className='db-happy db'>
                 <div>
@@ -228,6 +228,10 @@ export default function Dashboard({ userData }) {
             </div>
           </div>
           <div className='db-chat'>
+            <div className='db-chat-c1'></div>
+            <div className='db-chat-c2'>
+              <Chat botId={userData.botId}/>
+            </div>
           </div>
         </div>
       </div>

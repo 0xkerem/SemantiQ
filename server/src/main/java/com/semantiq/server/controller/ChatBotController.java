@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/bots")
@@ -92,20 +94,38 @@ public class ChatBotController {
     }
 
 
-    // If chatId is -1 it means create new chat
+    // If chatId is -1 it means create a new chat
     @PostMapping("/{chatBotId}/chat/{chatId}")
     public ResponseEntity<?> ask(@PathVariable int chatBotId, @PathVariable int chatId, @RequestBody String question) {
         if (chatbotService.findChatBotById(chatBotId) == null) {
-            return new ResponseEntity<>("There is no bot with id " + String.valueOf(chatBotId), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("There is no bot with id " + chatBotId, HttpStatus.NOT_FOUND);
         }
 
-        String answer = "";
-        answer = chatbotService.askQuestion(chatBotId, chatId, question);
+        Map<String, Object> result = chatbotService.askQuestion(chatBotId, chatId, question);
 
-        if (answer.equals("")) {
-            return new ResponseEntity<>("Problem occurred!", HttpStatus.EXPECTATION_FAILED);
+        if (result.containsKey("responseBody") && result.containsKey("chatId")) {
+            String responseBody = (String) result.get("responseBody");
+            int newChatId = (int) result.get("chatId");
+
+            // Parse the responseBody as a JSON object
+            Map<String, Object> parsedResponseBody = chatbotService.parseJsonResponse(responseBody);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("answer", parsedResponseBody);
+            response.put("chatId", newChatId);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(answer, HttpStatus.OK);
+            return new ResponseEntity<>("Problem occurred!", HttpStatus.EXPECTATION_FAILED);
         }
+    }
+
+    @GetMapping("/{botId}")
+    public ResponseEntity<?> getName(@PathVariable int botId) {
+        if (chatbotService.findChatBotById(botId) == null) {
+            return new ResponseEntity<>("There is no bot with provided ID.", HttpStatus.NOT_FOUND);
+        }
+        String botName = chatbotService.findChatBotById(botId).getBotName();
+        return new ResponseEntity<>(botName, HttpStatus.OK);
     }
 }

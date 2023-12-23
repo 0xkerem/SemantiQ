@@ -31,9 +31,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ChatBotService {
@@ -249,7 +247,7 @@ public class ChatBotService {
     }
 
     // Chat service
-    public String askQuestion(int botId, int chatId, String question) {
+    public Map<String, Object> askQuestion(int botId, int chatId, String question) {
         ChatBot bot = findChatBotById(botId);
         String sourceId = bot.getData().getSourceId();
 
@@ -328,7 +326,11 @@ public class ChatBotService {
 
         chatRepo.save(chat);
 
-        return responseBody;
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("responseBody", responseBody);
+        responseMap.put("chatId", chat.getId());
+
+        return responseMap;
     }
 
     private List<Message> getChatHistory(String filePath) {
@@ -349,4 +351,13 @@ public class ChatBotService {
         return null;
     }
 
+    // Method to parse JSON string to a Map
+    public Map<String, Object> parseJsonResponse(String jsonResponse) {
+        try {
+            return objectMapper.readValue(jsonResponse, Map.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyMap();
+        }
+    }
 }
