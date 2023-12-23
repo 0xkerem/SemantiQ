@@ -20,26 +20,31 @@ export default function Panel({ email }) {
       });
   }, [email]);
 
+  // Added a conditional rendering to handle cases when userData is null
   if (loading) {
     return <p>Loading...</p>; // Render a loading indicator while fetching data
   }
 
+  if (!userData || (userData && userData.botId !== -1)) {
+    return (
+      <div className='Panel-body'>
+        <Dashboard userData={userData} />
+      </div>
+    );
+  }
+
   return (
     <div className='Panel-body'>
-      {userData && userData.botId !== -1 ? (
-        <Dashboard userData={userData} />
-      ) : (
-        <div>
-          <center>
-            <div className='new-user-alert'>
-              <p>
-                You don't have a Chatbot yet! To access your control panel, you first need to create a Chatbot.
-              </p>
-            </div>
-          </center>
-          <Create userData={userData.id} />
-        </div>
-      )}
+      <div>
+        <center>
+          <div className='new-user-alert'>
+            <p>
+              You don't have a Chatbot yet! To access your control panel, you first need to create a Chatbot.
+            </p>
+          </div>
+        </center>
+        <Create userId={userData.id} />
+      </div>
     </div>
   );
 }

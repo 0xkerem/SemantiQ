@@ -50,6 +50,7 @@ export default function Dashboard({ userData }) {
       const data = response.data;
       setChatId(data.id);
       setChatVote(data.vote);
+      fetchChatHistory(chatId);
 
     } catch (error) {
       alert(`The Chat with ${chatId} is not belong to your chatbot!`)
@@ -92,7 +93,6 @@ export default function Dashboard({ userData }) {
     const id = event.target.value;
     if (id !== "") {
       fetchChatData(id);
-      fetchChatHistory(id);
     } else {
       setchatHistory("");
       setChatId("");
@@ -103,7 +103,6 @@ export default function Dashboard({ userData }) {
   const onChatClick = useCallback((id) => {
     if (id !== "") {
       fetchChatData(id);
-      fetchChatHistory(id);
     } else {
       setchatHistory("");
       setChatId("");
