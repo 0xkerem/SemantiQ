@@ -110,7 +110,7 @@ export default function Login({ onLoginSuccess }) {
   return (
     <div className='Login'>
       {showSignup ? (
-        <Signup onBackToLogin={handleBackToLogin} />
+        <Signup onLoginSuccess={onLoginSuccess} />
       ) : (
         <div className='Login-box'>
           <div className='Login-pattern'></div>

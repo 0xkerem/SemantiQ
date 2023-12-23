@@ -30,7 +30,7 @@ export default function Header({ onLoginSuccess }) {
           <button className='Header-signup-button' onClick={handleSignupClick}>Sign up</button>
         </div>
         {showLogin && <Login onLoginSuccess={onLoginSuccess} />}
-        {showSignup && <Signup />}
+        {showSignup && <Signup onLoginSuccess={onLoginSuccess} />}
       </div>
       {overlayVisible && <div className='back-blur' /> /* Render the overlay based on visibility */}
     </div>

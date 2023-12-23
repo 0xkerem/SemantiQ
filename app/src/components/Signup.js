@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Login from './Login';
 
-export default function Signup() {
+export default function Signup({onLoginSuccess}) {
   const [showLogin, setShowLogin] = useState(false);
 
   const handleLoginClick = () => {
@@ -169,7 +169,7 @@ export default function Signup() {
   return (
     <div className='Signup'>
       {showLogin ? (
-        <Login onBackToSignUp={handleBacktoSignUp} />
+        <Login onLoginSuccess={onLoginSuccess} />
       ) : (
         <div className='Signup-box'>
           <div className='Signup-pattern'></div>

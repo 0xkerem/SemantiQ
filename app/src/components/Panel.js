@@ -37,7 +37,7 @@ export default function Panel({ email }) {
               </p>
             </div>
           </center>
-          <Create userData={userData.userID} />
+          <Create userData={userData.id} />
         </div>
       )}
     </div>

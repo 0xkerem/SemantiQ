@@ -25,7 +25,6 @@ function App() {
   const handleLoginSuccess = (email) => {
     setEmailAddress(email); // Set the email address received from login
     setIsLoggedIn(true);
-
     // If remember me is checked, store the email and rememberMe value in local storage
     localStorage.setItem('emailAddress', email);
   };
