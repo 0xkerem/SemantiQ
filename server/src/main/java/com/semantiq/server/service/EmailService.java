@@ -26,12 +26,29 @@ public class EmailService {
     public void sendVerificationCode(String recipientEmail) throws MessagingException {
         int verificationCode = userRepo.findByEmail(recipientEmail).getVerificationCode();
         String subject = "Verification Code";
-        String message = "Your verification code is: " + String.valueOf(verificationCode);
+        String message = "Your verification code is: " + String.valueOf(verificationCode) +
+                "\nEnter the code in the box on the sign-up screen or try logging in with this email to re-enter the code.";
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-        helper.setFrom("your_email@example.com");
+        helper.setFrom("semantiq.app@gmail.com");
         helper.setTo(recipientEmail);
+        helper.setSubject(subject);
+        helper.setText(message, true);
+
+        javaMailSender.send(mimeMessage);
+    }
+
+    // New method for sending a report to the owner when the user is dissatisfied
+    public void sendReport(String userEmail, String ownerEmail, int chatId) throws MessagingException {
+        String subject = "User Dissatisfaction Report";
+        String message = "User with email " + userEmail + " is dissatisfied with the chatbot's answer.\n"
+                + "Chat ID: " + chatId + "\n\nPlease review the conversation history on your panel.";
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+        helper.setFrom("semantiq.app@gmail.com");
+        helper.setTo(ownerEmail);
         helper.setSubject(subject);
         helper.setText(message, true);
 

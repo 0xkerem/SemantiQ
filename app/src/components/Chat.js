@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function Chat({ botId }) {
+  const [chatId, setChatId] = useState(-1);
   const [botName, setBotName] = useState('');
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
@@ -20,7 +21,7 @@ export default function Chat({ botId }) {
   const generateCode = () => {
     const generatedCode = `
       <div id="semantiq-chatbot"></div>
-      <script data-bot-id="${botId}" defer="defer" src="http://localhost:8080/static/main.ea9881ca.js"></script>
+      <script data-bot-id="${botId}" defer="defer" src="http://localhost:8080/static/main.57a7bb31.js"></script>
       <script>
         var link = document.createElement("link");
         link.href = "http://localhost:8080/static/main.ba187d75.css";
@@ -51,9 +52,33 @@ export default function Chat({ botId }) {
     sendVote(1);
   };
 
-  const voteNegative = () => {
-    sendVote(-1);
-  };
+const voteNegative = async () => {
+  sendVote(-1);
+  const userEmail = prompt('If you want to contact a real person, leave your email address, otherwise leave it blank.');
+  
+  if (userEmail) {
+      const data = {
+          chatId: chatId,
+          userEmail: userEmail,
+          chatBotId: botId
+      };
+
+      try {
+          const response = await axios.post('http://localhost:8080/api/email/report', data);
+          
+          if (response.status === 200) {
+              // Request successful, do something
+              console.log('Email reported successfully');
+          } else {
+              console.error('Failed to report email');
+          }
+      } catch (error) {
+          // Handle errors
+          console.error('Error:', error);
+      }
+  }
+};
+
 
   const sendVote = (vote) => {
     // Determine the chatId for the vote
@@ -62,7 +87,6 @@ export default function Chat({ botId }) {
     // Sending a POST request to vote
     axios.post(`http://localhost:8080/api/botdata/${botId}/chats/${chatId}/${vote}`)
       .then(response => {
-        // Handle successful vote response if needed
         console.log(`Voted ${vote === 1 ? 'positive' : 'negative'}`);
       })
       .catch(error => {
@@ -72,35 +96,39 @@ export default function Chat({ botId }) {
 
   const sendMessage = (e) => {
     e.preventDefault();
-  
+
     if (inputText.trim() === '') return;
-  
+
     // Update messages state with the user message immediately
     const newUserMessage = { text: inputText, sender: 'user' };
     setMessages([...messages, newUserMessage]);
     setInputText('');
-  
+
     // Send user message to the server via Axios POST request
-    const chatId = messages.length === 0 ? -1 : messages[messages.length - 1].chatId;
-    axios.post(`http://localhost:8080/api/bots/${botId}/chat/${chatId}`, {
+    const currentChatId = messages.length === 0 ? -1 : messages[messages.length - 1].chatId;
+    axios
+      .post(`http://localhost:8080/api/bots/${botId}/chat/${currentChatId}`, {
         question: inputText,
       })
-      .then(response => {
+      .then((response) => {
         let newAssistantMessage = response.data.answer.content;
         const newChatId = response.data.chatId;
-  
+
         // Remove unwanted content if it exists in the assistant's message
         if (newAssistantMessage.startsWith('{"content":"') && newAssistantMessage.endsWith('"}')) {
           newAssistantMessage = newAssistantMessage.substring(12, newAssistantMessage.length - 2);
         }
-  
+
+        // Update chatId state with the new chatId
+        setChatId(newChatId);
+
         // Update messages state with the new assistant message, preserving previous messages
-        setMessages(prevMessages => [
+        setMessages((prevMessages) => [
           ...prevMessages,
           { text: newAssistantMessage, sender: 'assistant', chatId: newChatId },
         ]);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error sending message:', error);
       });
   };
