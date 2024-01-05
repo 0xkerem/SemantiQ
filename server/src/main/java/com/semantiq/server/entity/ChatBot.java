@@ -1,5 +1,7 @@
 package com.semantiq.server.entity;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 
@@ -14,7 +16,8 @@ public class ChatBot {
     public String botName;
     @OneToOne
     private User owner;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private BotData data;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Chat> chatList;

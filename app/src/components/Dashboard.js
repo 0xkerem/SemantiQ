@@ -142,7 +142,7 @@ export default function Dashboard({ userData }) {
   };
 
   if (showUpdate) {
-    return <Update />;
+    return <Update userId={userData.id}/>;
   } else {
     return (
       <div className='Dashboard-body'>
@@ -183,8 +183,8 @@ export default function Dashboard({ userData }) {
                     color: chatVote === "1" ? 'green' : chatVote ===  "-1" ? 'tomato' : 'inherit'
                   }}
                   >{
-                    chatVote === "1" ? <span class="material-symbols-outlined">sentiment_satisfied</span>
-                      : chatVote === "-1" ? <span class="material-symbols-outlined">sentiment_dissatisfied</span> : ''}</div>
+                    chatVote === "1" ? <span className="material-symbols-outlined">sentiment_satisfied</span>
+                      : chatVote === "-1" ? <span className="material-symbols-outlined">sentiment_dissatisfied</span> : ''}</div>
                 </div>
               </center>
               <center>

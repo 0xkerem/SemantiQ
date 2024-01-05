@@ -28,7 +28,7 @@ export default function Update({ userId }) {
     setSections(updatedSections);
   };
 
-  const handleCreateBot = () => {
+  const handleUpdateBot = () => {
     const formData = {
       botName,
       companyName,
@@ -51,10 +51,10 @@ export default function Update({ userId }) {
         if (response.ok) {
           // Page refresh upon successful response
           window.location.reload();
+        } else if (response.status === 400) { // Check for 400
+          alert('You have reached the daily update limit. Please try again tomorrow.');
         } else {
-          // Handle other response status codes (e.g., error messages)
           console.log('Response:', response);
-          // You can add further logic here for different status codes
         }
       })
       .catch(error => {
@@ -70,7 +70,7 @@ export default function Update({ userId }) {
   return (
     <div className='CreateUpdate-body'>
       <div className='Update-back-button'>
-        <span class="material-symbols-outlined" onClick={handleBackButton}>arrow_back</span>
+        <span className="material-symbols-outlined" onClick={handleBackButton}>arrow_back</span>
       </div>
       <div>
         <div className='botform-item'>
@@ -146,7 +146,7 @@ export default function Update({ userId }) {
         ))}
         <button className='botformButton' onClick={handleAddSection}>+ Add Section</button>
       </div>
-      <button className='botformButton' onClick={handleCreateBot}>Update Bot</button>
+      <button className='botformButton' onClick={handleUpdateBot}>Update Bot</button>
     </div>
   );
 };
