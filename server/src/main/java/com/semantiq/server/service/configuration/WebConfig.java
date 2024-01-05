@@ -15,6 +15,13 @@ public class WebConfig implements WebMvcConfigurer {
                 // Add more configurations if needed
                 .allowCredentials(true);
 
+        // CORS configuration for /api/users/**
+        registry.addMapping("/api/users/")
+                .allowedOriginPatterns("*") // Use allowedOriginPatterns instead of allowedOrigins
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                // Add more configurations if needed
+                .allowCredentials(true);
+
         // CORS configuration for /static/**
         registry.addMapping("/static/")
                 .allowedOriginPatterns("*") // Use allowedOriginPatterns instead of allowedOrigins
