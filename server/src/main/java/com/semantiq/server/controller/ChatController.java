@@ -72,8 +72,8 @@ public class ChatController {
     }
 
     @GetMapping("/bots/{botId}")
-    public ResponseEntity<?> getAllChatsForBot(@PathVariable int botId) {
-        List<Chat> botChats = chatService.findAllChatsForBot(botId);
+    public ResponseEntity<List<ChatDTO>> getAllChatsForBot(@PathVariable int botId) {
+        List<Chat> botChats = chatService.findAllChatsForBotFromLastYear(botId);
         List<ChatDTO> chatDTOs = new ArrayList<>();
 
         for (Chat chat : botChats) {
@@ -87,5 +87,4 @@ public class ChatController {
 
         return new ResponseEntity<>(chatDTOs, HttpStatus.OK);
     }
-
 }

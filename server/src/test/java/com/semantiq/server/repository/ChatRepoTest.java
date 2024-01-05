@@ -1,6 +1,5 @@
 package com.semantiq.server.repository;
 
-<<<<<<< HEAD
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -64,8 +63,3 @@ public class ChatRepoTest {
         assertEquals(5, chatCountList.get(0).get("totalUsage"));
     }
 }
-
-=======
-public class ChatRepoTest {
-}
->>>>>>> origin/main

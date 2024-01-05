@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +26,14 @@ public class ChatService {
 
     public List<Chat> findAllChatsForBot(int botId) {
         return chatRepo.findAllByBotId(botId);
+    }
+
+    public List<Chat> findAllChatsForBotFromLastYear(int botId) {
+        // Calculate the date one year ago from the current date
+        LocalDateTime oneYearAgo = LocalDateTime.now().minus(1, ChronoUnit.YEARS);
+
+        // Retrieve chats from the last year for the given botId
+        return chatRepo.findAllByBotIdAndCreatedAtAfter(botId, oneYearAgo);
     }
 
     public void setVote(int chatId, int vote) {

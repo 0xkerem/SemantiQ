@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,12 @@ public interface ChatRepo extends JpaRepository<Chat, Integer> {
     List<Map<String, Object>> findChatsCountLast15Days(@Param("chatBotId") int chatBotId,
                                                        @Param("startDate") LocalDate startDate,
                                                        @Param("endDate") LocalDate endDate);
+
+    @Query("SELECT c FROM Chat c WHERE c.bot.id = :botId AND c.datetime >= :startDate")
+    List<Chat> findAllByBotIdAndCreatedAtAfter(
+            @Param("botId") int botId,
+            @Param("startDate") LocalDateTime startDate
+    );
 }
 
 
