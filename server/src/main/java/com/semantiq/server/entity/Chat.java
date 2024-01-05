@@ -1,7 +1,6 @@
 package com.semantiq.server.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity

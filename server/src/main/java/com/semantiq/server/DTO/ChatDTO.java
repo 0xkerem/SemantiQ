@@ -3,10 +3,10 @@ package com.semantiq.server.DTO;
 import java.time.LocalDateTime;
 
 public class ChatDTO {
-    int id;
-    int chatbotId;
-    LocalDateTime datetime;
-    String vote;
+    private int id;
+    private int chatbotId;
+    private LocalDateTime datetime;
+    private String vote;
 
     public int getId() {
         return id;

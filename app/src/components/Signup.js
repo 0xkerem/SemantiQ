@@ -182,19 +182,19 @@ export default function Signup({onLoginSuccess}) {
               </p>
               <form onSubmit={handleSignup}>
                 <div className="form-group">
-                  <input type="text" className="losign" name="name" id="name" placeholder="Name" />
+                  <input autocomplete="off" type="text" className="losign" name="name" id="name" placeholder="Name" />
                 </div>
                 <div className="form-group">
-                  <input type="text" className="losign" name="surname" id="surname" placeholder="Surname" />
+                  <input autocomplete="off" type="text" className="losign" name="surname" id="surname" placeholder="Surname" />
                 </div>
                 <div className="form-group">
-                  <input type="text" className="losign" name="company" id="company" placeholder="Company" />
+                  <input autocomplete="off" type="text" className="losign" name="company" id="company" placeholder="Company" />
                 </div>
                 <div className="form-group">
-                  <input type="email" className="losign" name="email" id="email" placeholder="Email Address" />
+                  <input autocomplete="off" type="email" className="losign" name="email" id="email" placeholder="Email Address" />
                 </div>
                 <div className="form-group">
-                  <input type="text" className="losign" name="password" id="password" placeholder="Password" onChange={handlePasswordChange}/>
+                  <input autocomplete="off" type="text" className="losign" name="password" id="password" placeholder="Password" onChange={handlePasswordChange}/>
                 </div>
                 <div className="form-group p-container">
                   <div className="password-c">

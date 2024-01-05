@@ -89,6 +89,24 @@ export default function Dashboard({ userData }) {
     setShowUpdate(true);
   };
 
+  const handleDeleteButtonClick = async () => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/api/users/${userData.email}/bots`);
+  
+      // If the response status is OK (200 range), refresh the page
+      if (response.status >= 200 && response.status < 300) {
+        window.location.reload(true);
+      } else {
+        // If the response status is not in the 200 range, alert 'Bad Request'
+        alert('Bad Request');
+      }
+    } catch (error) {
+      // If an error occurs during the request, alert the error message
+      alert('An error occurred while processing the request.');
+      console.error(error);
+    }
+  };
+
   const handleInputChange = useCallback((event) => {
     const id = event.target.value;
     if (id !== "") {
@@ -131,6 +149,7 @@ export default function Dashboard({ userData }) {
         <div className='db-top'>
           <div className='db-t1'>
             <button className='db-update' onClick={handleUpdateButtonClick}>Update Bot</button>
+            <button className='db-delete' onClick={handleDeleteButtonClick}>Delete Bot</button>
           </div>
           <div className='db-t2'></div>
           <div className='db-t3'>

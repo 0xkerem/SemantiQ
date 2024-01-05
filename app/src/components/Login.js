@@ -123,10 +123,10 @@ export default function Login({ onLoginSuccess }) {
               </p>
               <form onSubmit={handleLogin}>
                 <div className="form-group">
-                  <input type="text" className="losign" name="email" placeholder="Email Address" />
+                  <input autocomplete="off" type="text" className="losign" name="email" placeholder="Email Address" />
                 </div>
                 <div className="form-group">
-                  <input type="password" className="losign" name="password" placeholder="Password" />
+                  <input autocomplete="off" type="password" className="losign" name="password" placeholder="Password" />
                 </div>
                 <div className="form-group">
                   <div className="checkbox-group">
