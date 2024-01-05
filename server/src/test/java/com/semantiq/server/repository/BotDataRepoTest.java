@@ -43,4 +43,3 @@ public class BotDataRepoTest {
         verify(botDataRepoMock, times(1)).delete(botData);
     }
 }
-

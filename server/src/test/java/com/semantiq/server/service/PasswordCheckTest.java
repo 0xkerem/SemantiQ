@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.semantiq.server.service;
 
 import org.junit.jupiter.api.Test;
@@ -35,3 +36,7 @@ public class PasswordCheckTest {
     }
 }
 
+=======
+package com.semantiq.server.service;public class PasswordCheckTest {
+}
+>>>>>>> origin/main

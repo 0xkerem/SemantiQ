@@ -1,5 +1,6 @@
 package com.semantiq.server.repository;
 
+<<<<<<< HEAD
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -64,3 +65,7 @@ public class ChatRepoTest {
     }
 }
 
+=======
+public class ChatRepoTest {
+}
+>>>>>>> origin/main
