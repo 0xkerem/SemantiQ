@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.semantiq.server.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,7 +34,4 @@ public class ChatBotRepoTest {
     }
 }
 
-=======
-package com.semantiq.server.repository;public class ChatBotRepoTest {
-}
->>>>>>> origin/main
+
