@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.semantiq.server.service;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -209,8 +208,3 @@ public class UserServiceTest {
 
 
 }
-
-=======
-package com.semantiq.server.service;public class UserServiceTest {
-}
->>>>>>> origin/main

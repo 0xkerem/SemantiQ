@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.semantiq.server.service;
 
 import org.junit.jupiter.api.Test;
@@ -35,8 +34,3 @@ public class PasswordCheckTest {
         assertFalse(passwordEncoder.matches(differentPassword, encodedPassword));
     }
 }
-
-=======
-package com.semantiq.server.service;public class PasswordCheckTest {
-}
->>>>>>> origin/main
