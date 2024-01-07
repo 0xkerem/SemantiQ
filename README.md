@@ -26,7 +26,7 @@ The SemantiQ application is built on a client-server architecture and utilizes t
 
 #### Server-Side
 
-- **Java Spring**: Framework used for server-side development.
+- **Java Spring**: Framework used for server-side development. (JDK Development Kit 21.0.1)
 - **MySQL**: Database management system for data storage.
 - **Google SMTP (Simple Mail Transfer Protocol)**: Utilized for email functionality.
 
@@ -64,12 +64,13 @@ These technologies have been employed to create a robust and efficient system th
 5. **Build and Start Server**:
    - In the server directory, run `mvn package` to build the project.
    - Run `java -jar target/server-0.0.1-SNAPSHOT.jar` to start the server.
+   - Alternatively, the **server** folder can be opened with an IDE (exp. Intellij idea) then built and run.
 
 6. **Install Node.js**:
    - [Install Node.js](https://nodejs.org/en/download/).
 
 7. **Install Dependencies for React App**:
-   - In the `/app` directory, explain that this is a React app.
+   - In the `/app` directory,
    - Install dependencies by running `npm install`.
 
 8. **Run the Application**:
