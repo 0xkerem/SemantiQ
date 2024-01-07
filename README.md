@@ -56,7 +56,7 @@ These technologies have been employed to create a robust and efficient system th
      spring.mail.username=
      spring.mail.password=
      ```
-   - Set your email credentials and get an application password for Google SMTP.
+   - Set your email credentials and [get an application password for Google SMTP](https://myaccount.google.com/apppasswords).
 
 4. **Install Maven**:
    - [Install Maven](https://mkyong.com/maven/how-to-install-maven-in-windows/) (provide installation instructions).
@@ -74,10 +74,6 @@ These technologies have been employed to create a robust and efficient system th
 
 8. **Run the Application**:
    - After installing dependencies, execute `npm run start` in the app directory.
-
-## Contributors
-
-[List contributors or acknowledge contributors here]
 
 ## License
 
